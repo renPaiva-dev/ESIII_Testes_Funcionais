@@ -1,0 +1,20 @@
+# ambientes virtuais e dependências (o guia pede para não enviar)
+.venv/
+venv/
+node_modules/
+target/
+
+# Python
+__pycache__/
+*.pyc
+
+# banco local do Estoque Fácil (recriado com python app.py --reset)
+dados/
+*.db
+*.db-wal
+*.db-shm
+
+# editor e sistema
+.vscode/
+.idea/
+.DS_Store
