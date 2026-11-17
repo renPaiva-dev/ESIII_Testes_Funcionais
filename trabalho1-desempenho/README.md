@@ -52,6 +52,8 @@ cd projeto-anterior/estoque-facil && SEED_PRODUTOS=1000 python app.py --reset   
 
 Depois, em outro terminal com o venv ativo, siga o README de cada pasta de testes (links acima).
 
+Os scripts `rodar.sh` e `rodar_fases.sh` precisam de bash e curl (Linux, macOS ou Git Bash/WSL no Windows). No Windows sem bash, use os comandos `python -m locust ...` que estão no README de cada pasta.
+
 ### Projeto anterior: Estoque Fácil
 
 ```sh
@@ -60,7 +62,7 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1          # Windows PowerShell
 # source .venv/bin/activate         # Linux/macOS
 python -m pip install -r requirements.txt
-python app.py                       # http://127.0.0.1:5001
+SEED_PRODUTOS=1000 python app.py --reset   # http://127.0.0.1:5001, com os 1.000 produtos usados nos testes
 ```
 
 Usuários, regras de negócio, API e localizadores estão em

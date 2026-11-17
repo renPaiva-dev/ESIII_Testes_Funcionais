@@ -1,0 +1,1 @@
+PROTEÇÃO ACIONADA em 25 s: falhas 32% (limite 20%) por 10 s seguidos

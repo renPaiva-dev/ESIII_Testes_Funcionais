@@ -194,7 +194,7 @@ def main(pasta):
         w.writerow(["cenario", "execucao", "data", "tipo_teste", "usuarios", "ritmo_r", "duracao_s",
                     "requisicoes", "p50_ms", "p95_ms", "req_s", "falhas_pct", "decisao", "justificativa"])
         w.writerows(registro)
-    print(f"\n_Registro gravado em {pasta / 'registro_resultados.csv'}_")
+    print("\n_Registro gravado em registro_resultados.csv_")
 
 
 if __name__ == "__main__":

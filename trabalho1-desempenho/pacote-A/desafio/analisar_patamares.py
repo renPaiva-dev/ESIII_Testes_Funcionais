@@ -11,6 +11,7 @@ Para cada patamar (número de alunos simultâneos), mostra a mediana do p95 "cor
 descartados, para não misturar a transição entre um patamar e outro.
 """
 import csv
+import os
 import statistics
 import sys
 from collections import defaultdict
@@ -50,7 +51,7 @@ def main(caminho):
 
     nomes = sorted({n for _, n in p95}, key=lambda n: (n == "Aggregated", n))
     patamares = sorted({u for u, _ in p95})
-    print(f"Arquivo: {caminho}")
+    print(f"Arquivo: {os.path.basename(caminho)}")
     print("p95 em ms (mediana da janela no patamar) | req/s | falhas/s   (* = acima da meta)\n")
     cab = "| Alunos | " + " | ".join(nomes) + " |"
     print(cab)

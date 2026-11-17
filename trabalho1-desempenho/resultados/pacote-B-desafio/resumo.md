@@ -44,4 +44,4 @@
 - continuo100para20 r2: atendeu às metas após 12 s desde a queda para 20 usuários (queda em t=27 s) → dentro da meta
 - continuo100para20 r3: atendeu às metas após 12 s desde a queda para 20 usuários (queda em t=26 s) → dentro da meta
 
-_Registro gravado em /home/renato/Downloads/ESIII_Testes_Funcionais-549a2f204f3049c08e9967ef1b74b261/ESIII_Testes_Funcionais/trabalho1-desempenho/pacote-B/desafio/../../resultados/pacote-B-desafio/registro_resultados.csv_
+_Registro gravado em registro_resultados.csv_

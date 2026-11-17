@@ -12,7 +12,7 @@ Perfis de usuário (modelo fechado):
                     registrar movimento   peso 3   POST /api/produtos/<id>/movimentacoes
   Gerente  (10%)  consulta o relatório     GET  /api/relatorio
 
-Metas (justificativa no README):
+Metas (justificativa no plano_e_relatorio.md):
   p95 busca <= 300 ms · p95 consulta <= 300 ms · p95 movimentação <= 500 ms
   p95 relatório <= 2000 ms · p95 login <= 1000 ms · erros técnicos < 1%
   integridade: saldo nunca negativo e saldo final = inicial + entradas - saídas aceitas

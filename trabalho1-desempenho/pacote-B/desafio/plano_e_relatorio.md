@@ -58,7 +58,7 @@ Patamar, depois da rampa:
 - **Recuperação:**
   - `recuperacao20`, logo depois do estresse 2: metas atendidas em 3–4 s;
   - perfil contínuo de 100 para 20: metas atendidas **12 s** depois da queda, nas 3 repetições.
-- **Aviso sobre os logs:** os `continuo100para20_r*.log` dizem "INTERROMPIDA", mas a proteção só reduziu a carga para 20 e o teste seguiu. A mensagem já foi corrigida no script.
+- **Aviso sobre os logs:** os `continuo100para20_r*.log` dizem "INTERROMPIDA", mas a proteção só reduziu a carga para 20 e o teste seguiu. Esses logs foram gerados antes de a mensagem do script ser corrigida.
 
 ## 4. Análise
 

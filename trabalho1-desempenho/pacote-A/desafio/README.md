@@ -21,7 +21,8 @@ python app.py
 cd trabalho1-desempenho/pacote-A/desafio
 ./rodar.sh verificacao      # 1 aluno por 15 s: confere o script
 
-# versão curta da carga (40 s, 100 alunos), com a tabela ao vivo, para a apresentação:
+# versão curta da carga (40 s, 100 alunos), com a tabela ao vivo, para a apresentação
+# (saída do ensaio em resultados/pacote-A-desafio/demo_ensaio.log):
 TIPO_TESTE=demo python -m locust -f locustfile_matricula.py --host http://127.0.0.1:5000 --headless
 ./rodar.sh carga 3          # carga_r1, carga_r2, carga_r3
 ./rodar.sh pico 3

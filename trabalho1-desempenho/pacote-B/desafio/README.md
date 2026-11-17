@@ -30,6 +30,12 @@ python -m locust -f desafio_locust.py --host http://127.0.0.1:8000 --headless \
   -u 20 -r 2 -t 90s --stop-timeout 5s --csv-full-history --csv carga20_r1 --html carga20_r1.html
 ```
 
+Execução curta para a apresentação (100 usuários até a proteção disparar, cerca de 25 s). A saída do ensaio está em `resultados/pacote-B-desafio/demo_estresse100_ensaio.log`:
+
+```sh
+python -m locust -f desafio_locust.py --host http://127.0.0.1:8000 --headless -u 100 -r 10 -t 40s
+```
+
 ## Plano, resultados e análise
 
 Estão em [`plano_e_relatorio.md`](plano_e_relatorio.md), no formato do modelo `Modelo_Plano_e_Relatorio_Desempenho.md`. As evidências de cada execução estão em [`../../resultados/pacote-B-desafio/`](../../resultados/pacote-B-desafio/), com o registro no formato do modelo em `registro_resultados.csv`.

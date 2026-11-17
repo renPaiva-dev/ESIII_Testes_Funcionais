@@ -14,7 +14,7 @@ Equipe: Renato de Paiva Belarmino e Alisson Gabriel   Pacote/Projeto: Pacote A �
 | Perfis (usuários, ritmo, duração) | Carga: rampa de 10 s até 100 alunos, mais 120 s com 100. Estresse: degraus de +50 alunos a cada 30 s (50, 100, …, 400). Pico: 0 → 200 alunos em 10 s, 60 s com 200, depois 30 s com 20. Recuperação: os 30 s finais do pico, com 20 alunos |
 | Repetições | 3 de cada tipo (`carga_r1`, `carga_r2`, `carga_r3`…), mais uma verificação com 1 aluno por 15 s |
 | Metas (SLA) | p95 geral ≤ 800 ms; p95 do comprovante ≤ 1500 ms; erros técnicos < 1%; outras: nunca vaga negativa |
-| Critério de parada | Máquina instável ou erros técnicos acima de 20% por 10 s. Não é obrigatório derrubar o sistema |
+| Critério de parada | Interromper se a máquina ficar instável, se os erros técnicos passarem de 20% por 10 s ou se o p95 geral passar de 2000 ms por 10 s. Neste script o acompanhamento é feito pelo terminal (não há parada automática). Não é obrigatório derrubar o sistema |
 
 **Justificativa da proporção:**
 - **Consultar a oferta (peso 5):** é o mais comum. Na abertura, o aluno atualiza a página para ver as vagas, e quem já se matriculou ou desistiu continua só consultando.
