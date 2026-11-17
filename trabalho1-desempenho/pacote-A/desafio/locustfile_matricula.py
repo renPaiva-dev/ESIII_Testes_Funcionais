@@ -1,34 +1,12 @@
 """
-DESAFIO A - Trabalho 1: abertura da matrícula 2026.2 (Locust / Python)
+Desafio A - abertura da matrícula.
 
-Situação: às 19h a coordenação libera a matrícula e os 200 alunos entram no portal
-quase juntos. Cada usuário virtual (VU) é UM aluno, que percorre a jornada real:
+Cada usuário virtual é um aluno: consulta a oferta, se matricula e baixa o comprovante.
+Metas: p95 geral <= 800 ms, p95 do comprovante <= 1500 ms, erros técnicos < 1%.
+409 e 422 são regra de negócio (contam como sucesso e vão para <prefixo>_regras.csv).
+TIPO_TESTE escolhe o perfil: verificacao, demo, carga, pico ou estresse.
 
-    consultar a oferta  ->  matricular-se  ->  baixar o comprovante
-
-Metas da coordenação (SLA), verificadas automaticamente no fim da execução:
-    - p95 geral                  <= 800 ms
-    - p95 do comprovante         <= 1500 ms
-    - erros técnicos (5xx, timeout, resposta incoerente) < 1%
-    - nunca pode haver vagas negativas (integridade)
-409 e 422 são REGRAS DE NEGÓCIO corretas: contam como sucesso no Locust e são
-contadas à parte no arquivo <prefixo>_regras.csv.
-
-Tipo de teste pela variável TIPO_TESTE:
-    verificacao  1 aluno por 15 s (confere o script antes dos testes de verdade)
-    carga        rampa de 10 s até 100 alunos + 120 s com 100 alunos
-    pico         0 -> 200 alunos em 10 s, mantém 60 s, cai para 20 por 30 s (recuperação)
-    estresse     degraus de +50 alunos a cada 30 s: 50, 100, ..., 400
-
-Executar (sistema A no ar em http://127.0.0.1:5000):
-    TIPO_TESTE=carga python -m locust -f locustfile_matricula.py --host http://127.0.0.1:5000 \
-        --headless --csv ../../resultados/pacote-A-desafio/carga_r1 --csv-full-history \
-        --html ../../resultados/pacote-A-desafio/carga_r1.html
-    (ou use ./rodar.sh carga 1)
-
-O script zera o sistema sozinho no início (POST /api/admin/reset). Para não zerar: RESET=0.
-Use 127.0.0.1 e não "localhost": no Linux, localhost tenta IPv6 primeiro e cada
-requisição perde ~2 s, o que falsifica a medição.
+    TIPO_TESTE=carga python -m locust -f locustfile_matricula.py --host http://127.0.0.1:5000 --headless
 """
 import csv
 import itertools
@@ -40,32 +18,30 @@ from collections import Counter
 import requests
 from locust import HttpUser, LoadTestShape, between, events, task
 
-# --------------------------------------------------------------------------- metas
+# metas
 SLA_P95_GERAL_MS = 800
 SLA_P95_COMPROVANTE_MS = 1500
-SLA_ERRO_TECNICO_MAX = 0.01      # 1 %
+SLA_ERRO_TECNICO_MAX = 0.01  # 1 %
 
-TOTAL_ALUNOS = 200               # 20260001 ... 20260200 existem no sistema
-MAX_TENTATIVAS = 3               # vagas esgotadas: tenta de novo com a oferta atualizada
-MAX_DOWNLOADS = 2                # cada aluno baixa o comprovante no máximo 2 vezes
-TIMEOUT_S = 10                   # acima disso a requisição conta como timeout (erro técnico)
+TOTAL_ALUNOS = 200  # 20260001 ... 20260200 existem no sistema
+MAX_TENTATIVAS = 3  # vagas esgotadas: tenta de novo com a oferta atualizada
+MAX_DOWNLOADS = 2  # cada aluno baixa o comprovante no máximo 2 vezes
+TIMEOUT_S = 10  # acima disso a requisição conta como timeout (erro técnico)
 
 OFERTA = "GET /api/disciplinas"
 MATRICULA = "POST /api/matriculas"
 COMPROVANTE = "GET /api/matriculas/[id]/comprovante"
 RE_COMPROVANTE = re.compile(r"COMP-\d{6}")
 
-# --------------------------------------------------------------------------- estado compartilhado
-# O Locust roda os VUs em greenlets (gevent) num único processo: estes dicionários
-# são compartilhados entre todos os alunos virtuais.
+# dados compartilhados entre todos os alunos virtuais
 _sequencia = itertools.count()
-matricula_do_aluno = {}          # aluno -> id da matrícula (para baixar o comprovante)
-regras = Counter()               # respostas de regra de negócio (409/422) e desistências
-vagas_iniciais = {}              # codigo -> vagas logo após o reset
-vagas_consumidas = Counter()     # codigo -> quantas matrículas 201 incluíram a disciplina
-matriculas_por_aluno = Counter() # aluno -> quantos 201 recebeu (deve ser no máximo 1)
-vagas_negativas_vistas = []      # (codigo, vagas) se alguma consulta mostrar vagas < 0
-integridade = {}                 # preenchido no fim do teste
+matricula_do_aluno = {}  # aluno -> id da matrícula (para baixar o comprovante)
+regras = Counter()  # respostas de regra de negócio (409/422) e desistências
+vagas_iniciais = {}  # codigo -> vagas logo após o reset
+vagas_consumidas = Counter()  # codigo -> quantas matrículas 201 incluíram a disciplina
+matriculas_por_aluno = Counter()  # aluno -> quantos 201 recebeu (deve ser no máximo 1)
+vagas_negativas_vistas = []  # (codigo, vagas) se alguma consulta mostrar vagas < 0
+integridade = {}  # preenchido no fim do teste
 
 
 def _limpar_estado():
@@ -91,17 +67,8 @@ def escolher_disciplinas(oferta):
 
 
 class Aluno(HttpUser):
-    """Um aluno na abertura da matrícula.
-
-    Pesos 5/3/2 enquanto o aluno está ativo (justificativa no README):
-      - consultar a oferta é o mais comum: o aluno abre o portal e atualiza a página
-        para acompanhar as vagas;
-      - matricular acontece uma vez por aluno (ou até 3 tentativas se a vaga acabar);
-      - o comprovante só existe depois da matrícula e é baixado no máximo 2 vezes.
-    Quando a ação sorteada não faz sentido para o aluno naquele momento (ex.: comprovante
-    antes de se matricular), ele consulta a oferta, como faria uma pessoa real.
-    """
-    wait_time = between(1, 4)    # tempo de leitura/decisão entre uma ação e outra
+    """Um aluno. Pesos 5/3/2 (justificativa no plano_e_relatorio.md)."""
+    wait_time = between(1, 4)  # tempo de leitura/decisão entre uma ação e outra
 
     def on_start(self):
         n = next(_sequencia)
@@ -113,7 +80,6 @@ class Aluno(HttpUser):
         self.downloads = 0
         self.desistiu = False
 
-    # ------------------------------------------------------------------ jornada
     @task(5)
     def consultar_oferta(self):
         with self.client.get("/api/disciplinas", name=OFERTA, catch_response=True,
@@ -139,7 +105,7 @@ class Aluno(HttpUser):
     @task(3)
     def matricular(self):
         if self.aluno in matricula_do_aluno or self.desistiu:
-            return self.consultar_oferta()          # já resolveu a matrícula
+            return self.consultar_oferta()  # já resolveu a matrícula
         if not self.oferta:
             self.consultar_oferta()
         disciplinas = escolher_disciplinas(self.oferta)
@@ -154,7 +120,7 @@ class Aluno(HttpUser):
             if r.status_code == 201:
                 self._registrar_sucesso(r, disciplinas)
             elif r.status_code in (409, 422):
-                r.success()                          # regra de negócio, não é erro técnico
+                r.success()  # regra de negócio, não é erro técnico
                 self._registrar_regra(r)
             else:
                 r.failure(f"HTTP {r.status_code}")  # 5xx, 401, timeout (status 0)...
@@ -177,7 +143,6 @@ class Aluno(HttpUser):
             except (ValueError, KeyError, TypeError):
                 r.failure("Resposta inválida")
 
-    # ------------------------------------------------------------------ apoio
     def _registrar_sucesso(self, r, disciplinas):
         try:
             dados = r.json()
@@ -202,7 +167,7 @@ class Aluno(HttpUser):
         if mensagem.startswith("Vagas esgotadas"):
             regras["409 Vagas esgotadas"] += 1
             self.tentativas += 1
-            self.oferta = []                        # força consultar a oferta atualizada
+            self.oferta = []  # força consultar a oferta atualizada
             if self.tentativas >= MAX_TENTATIVAS:
                 regras["desistiu: vagas esgotadas após 3 tentativas"] += 1
                 self.desistiu = True
@@ -213,7 +178,6 @@ class Aluno(HttpUser):
             regras[f"{r.status_code} {mensagem}"] += 1
 
 
-# --------------------------------------------------------------------------- perfis de carga
 class Perfil(LoadTestShape):
     """Curva de alunos simultâneos conforme TIPO_TESTE. Retorna (alunos, alunos criados/s)."""
     tipo = os.getenv("TIPO_TESTE", "carga")
@@ -223,22 +187,21 @@ class Perfil(LoadTestShape):
         if self.tipo == "verificacao":
             return (1, 1) if t < 15 else None
         if self.tipo == "demo":
-            return (100, 10) if t < 40 else None           # versão curta da carga, para apresentar ao vivo
+            return (100, 10) if t < 40 else None  # versão curta da carga, para apresentar ao vivo
         if self.tipo == "carga":
-            return (100, 10) if t < 130 else None          # 10 s de rampa + 2 min com 100
+            return (100, 10) if t < 130 else None  # 10 s de rampa + 2 min com 100
         if self.tipo == "pico":
             if t < 70:
-                return (200, 20)                            # 0 -> 200 em 10 s, mantém 60 s
+                return (200, 20)  # 0 -> 200 em 10 s, mantém 60 s
             if t < 100:
-                return (20, 100)                            # volta a 20: observa a recuperação
+                return (20, 100)  # volta a 20: observa a recuperação
             return None
         if self.tipo == "estresse":
-            alunos = 50 * (int(t // 30) + 1)                # 50, 100, ..., 400
+            alunos = 50 * (int(t // 30) + 1)  # 50, 100, ..., 400
             return (alunos, 50) if alunos <= 400 else None
         raise ValueError(f"TIPO_TESTE desconhecido: {self.tipo}")
 
 
-# --------------------------------------------------------------------------- início e fim
 @events.test_start.add_listener
 def preparar(environment, **_):
     _limpar_estado()

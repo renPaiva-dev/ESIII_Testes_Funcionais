@@ -1,30 +1,13 @@
 """
-PROJETO ANTERIOR - Trabalho 1: desempenho do Estoque Fácil (Locust / Python)
+Projeto anterior - desempenho do Estoque Fácil.
 
-Cenário: dia de movimento numa papelaria com cerca de 1.000 itens. Operadores consultam
-produtos e registram entradas e saídas no balcão e no depósito, enquanto o gerente
-acompanha o relatório do estoque.
+Operador (90%): login pela tela e depois busca, consulta e movimentação (pesos 5/2/3).
+Gerente (10%): relatório. Metas por operação no plano_e_relatorio.md.
+409 (estoque insuficiente) é regra de negócio e não conta como erro.
+No fim confere os saldos: inicial + entradas - saídas aceitas, nunca negativo.
 
-Perfis de usuário (modelo fechado):
-  Operador (90%)  entra no sistema uma vez (login pela tela) e depois repete:
-                    buscar produto        peso 5   GET  /api/produtos?q=...
-                    consultar produto     peso 2   GET  /api/produtos/<id> + /movimentacoes
-                    registrar movimento   peso 3   POST /api/produtos/<id>/movimentacoes
-  Gerente  (10%)  consulta o relatório     GET  /api/relatorio
-
-Metas (justificativa no plano_e_relatorio.md):
-  p95 busca <= 300 ms · p95 consulta <= 300 ms · p95 movimentação <= 500 ms
-  p95 relatório <= 2000 ms · p95 login <= 1000 ms · erros técnicos < 1%
-  integridade: saldo nunca negativo e saldo final = inicial + entradas - saídas aceitas
-
-409 (estoque insuficiente) é regra de negócio: conta como sucesso e é contado à parte.
-503 ("Banco de dados ocupado"), 5xx, timeout e conteúdo errado são erros técnicos.
-
-Sistema: SEED_PRODUTOS=1000 python app.py --reset   (http://127.0.0.1:5001)
-O script zera o sistema no início (POST /api/reset). Para manter o estado: RESET=0.
-Proteção: encerra se erros > 20% ou p95 > 2000 ms por 10 s seguidos.
-Perfil contínuo opcional: PERFIL=estresse_recuperacao USUARIOS_ESTRESSE=1200
-  (estresse por 90 s -> 20 usuários por 90 s, sem reiniciar o Locust nem zerar o banco).
+    SEED_PRODUTOS=1000 python app.py --reset      (sistema em http://127.0.0.1:5001)
+    python -m locust -f locustfile_estoque.py --host http://127.0.0.1:5001 --headless -u 20 -r 2 -t 90s
 """
 import csv
 import os
@@ -56,23 +39,30 @@ NOMES = {  # nome no Locust -> chave da meta
 }
 TERMOS = ["caneta", "caderno", "lápis", "borracha", "resma", "cola", "pasta",
           "genérico 00", "genérico 01", "genérico 05", "GEN-001", "GEN-0050", "CAN", "tesoura"]
-SITUACAO = lambda q, m: "sem_estoque" if q == 0 else ("baixo" if q <= m else "normal")  # RN11
 
-PROTECAO_ERROS, PROTECAO_P95_MS, PROTECAO_JANELA_S = 0.20, 2000, 10
 
-# --------------------------------------------------------------------------- estado compartilhado
+def situacao(qtd, minimo):  # RN11
+    if qtd == 0:
+        return "sem_estoque"
+    if qtd <= minimo:
+        return "baixo"
+    return "normal"
+
+
+PROTECAO_FALHAS, PROTECAO_P95_MS, PROTECAO_JANELA_S = 0.20, 2000, 10
+
+# dados compartilhados entre todos os usuários virtuais
 estado = {"total_produtos": 0, "protecao_em": None}
-saldo_inicial = {}            # id -> quantidade no início
+saldo_inicial = {}  # id -> quantidade no início
 movimento_aceito = Counter()  # id -> soma (+entradas, -saídas) dos 201 recebidos
-sem_resposta = {}             # id -> [deltas] de movimentações sem resposta (timeout): o servidor
-                              # pode ter gravado sem o cliente saber
-negocio = Counter()           # respostas de regra de negócio
-saldos_negativos = []         # (id, saldo_apos) se algum 201 trouxer saldo < 0
+sem_resposta = {}  # id -> movimentações que deram timeout (o servidor pode ter gravado)
+negocio = Counter()  # respostas de regra de negócio
+saldos_negativos = []  # (id, saldo_apos) se algum 201 trouxer saldo < 0
 
 
 class Operador(HttpUser):
     weight = 9
-    wait_time = between(1, 3)    # tempo de olhar a tela, pegar o produto, digitar
+    wait_time = between(1, 3)  # tempo de olhar a tela, pegar o produto, digitar
 
     def on_start(self):
         usuario, senha = random.choice([("admin", "admin123"), ("operador", "oper123")])
@@ -84,8 +74,10 @@ class Operador(HttpUser):
     @task(5)
     def buscar(self):
         termo = random.choice(TERMOS)
-        baixo = random.random() < 0.2          # 20% das buscas usam o filtro "só estoque baixo"
-        params = {"q": termo, **({"baixo": "1"} if baixo else {})}
+        baixo = random.random() < 0.2  # 20% das buscas usam o filtro "só estoque baixo"
+        params = {"q": termo}
+        if baixo:
+            params["baixo"] = "1"
         with self.client.get("/api/produtos", params=params, name="GET /api/produtos?q=",
                              catch_response=True, timeout=10) as r:
             if r.status_code != 200:
@@ -102,7 +94,7 @@ class Operador(HttpUser):
                         problema = f"item fora da busca: {p['sku']}"
                     elif baixo and p["quantidade"] > p["estoque_minimo"]:
                         problema = f"item fora do filtro de baixa: {p['sku']}"
-                    elif p["situacao"] != SITUACAO(p["quantidade"], p["estoque_minimo"]):
+                    elif p["situacao"] != situacao(p["quantidade"], p["estoque_minimo"]):
                         problema = f"situação errada: {p['sku']}"
                 if problema:
                     r.failure(problema)
@@ -120,7 +112,7 @@ class Operador(HttpUser):
             try:
                 p = r.json()
                 if p["id"] != pid or p["quantidade"] < 0 or \
-                        p["situacao"] != SITUACAO(p["quantidade"], p["estoque_minimo"]):
+                        p["situacao"] != situacao(p["quantidade"], p["estoque_minimo"]):
                     r.failure("produto incoerente")
             except (ValueError, KeyError, TypeError):
                 r.failure("Resposta inválida")
@@ -140,7 +132,7 @@ class Operador(HttpUser):
     @task(3)
     def movimentar(self):
         pid = random.randint(1, estado["total_produtos"] or 10)
-        tipo = random.choice(["entrada", "saida"])   # metade de cada: o estoque fica estável
+        tipo = random.choice(["entrada", "saida"])  # metade de cada: o estoque fica estável
         qtd = random.randint(1, 10)
         corpo = {"tipo": tipo, "quantidade": qtd, "observacao": "teste de carga", "usuario": "locust"}
         with self.client.post(f"/api/produtos/{pid}/movimentacoes", json=corpo,
@@ -159,17 +151,17 @@ class Operador(HttpUser):
                 except (ValueError, KeyError, TypeError):
                     r.failure("Resposta inválida")
             elif r.status_code == 409:
-                r.success()                                        # regra de negócio
+                r.success()  # regra de negócio
                 negocio["409 Estoque insuficiente"] += 1
             else:
-                if r.status_code == 0:                             # sem resposta (timeout/conexão)
+                if r.status_code == 0:  # sem resposta (timeout/conexão)
                     sem_resposta.setdefault(pid, []).append(qtd if tipo == "entrada" else -qtd)
-                r.failure(f"HTTP {r.status_code}")                 # 503 banco ocupado, 5xx, timeout...
+                r.failure(f"HTTP {r.status_code}")  # 503 banco ocupado, 5xx, timeout...
 
 
 class Gerente(HttpUser):
     weight = 1
-    wait_time = between(3, 8)    # o gerente atualiza o relatório de tempos em tempos
+    wait_time = between(3, 8)  # o gerente atualiza o relatório de tempos em tempos
 
     @task
     def relatorio(self):
@@ -186,7 +178,7 @@ class Gerente(HttpUser):
                 r.failure("Resposta inválida")
 
 
-# --------------------------------------------------------------------------- preparação e integridade
+# preparação e integridade
 def _todos_os_saldos(host):
     saldos, pagina = {}, 1
     while True:
@@ -221,10 +213,10 @@ def _vigiar(environment):
         rps = total.current_rps
         erros = total.current_fail_per_sec / rps if rps else 0
         p95 = total.get_current_response_time_percentile(0.95) or 0
-        ruins = ruins + 1 if (erros > PROTECAO_ERROS or p95 > PROTECAO_P95_MS) else 0
+        ruins = ruins + 1 if (erros > PROTECAO_FALHAS or p95 > PROTECAO_P95_MS) else 0
         if ruins >= PROTECAO_JANELA_S and estado["protecao_em"] is None:
             estado["protecao_em"] = time.time() - inicio
-            motivo = f"erros {erros:.0%}" if erros > PROTECAO_ERROS else f"p95 {p95} ms"
+            motivo = f"erros {erros:.0%}" if erros > PROTECAO_FALHAS else f"p95 {p95} ms"
             msg = f"PROTEÇÃO ACIONADA em {estado['protecao_em']:.0f} s: {motivo} por {PROTECAO_JANELA_S} s seguidos"
             print(f"\n[PROTEÇÃO] {msg}", flush=True)
             prefixo = getattr(environment.parsed_options, "csv_prefix", None)
@@ -258,7 +250,7 @@ def relatorio_final(environment, **_):
     linhas = []
     print("\n================ ESTOQUE FÁCIL - projeto anterior ================")
     for nome, chave in NOMES.items():
-        e = stats.entries.get((nome, nome.split(" ", 1)[0]))   # chave = (nome, método)
+        e = stats.entries.get((nome, nome.split(" ", 1)[0]))  # chave = (nome, método)
         if e and e.num_requests:
             p95 = e.get_response_time_percentile(0.95)
             ok = p95 <= METAS_MS[chave]
@@ -306,7 +298,7 @@ def _soma_de_subconjunto(valores, alvo):
     return any(sum(c) == alvo for n in range(1, len(valores) + 1) for c in combinations(valores, n))
 
 
-# --------------------------------------------------------------------------- perfil contínuo opcional
+# perfil contínuo opcional
 if os.getenv("PERFIL") == "estresse_recuperacao":
     class EstresseRecuperacao(LoadTestShape):
         """Estresse com USUARIOS_ESTRESSE (padrão 200) por 90 s e, sem parar, 20 usuários por 90 s."""
