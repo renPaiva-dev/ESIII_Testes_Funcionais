@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block titulo %}Produtos{% endblock %}
+{% block conteudo %}
+<h1>Produtos</h1>
+
+<form method="get" id="form-busca" class="busca" role="search">
+  <input id="busca" name="q" value="{{ q }}" placeholder="Nome ou SKU" aria-label="Buscar por nome ou SKU">
+  <label class="check"><input type="checkbox" id="filtro-baixo" name="baixo" value="1" {% if baixo %}checked{% endif %}> Só estoque baixo</label>
+  <button id="btn-buscar" type="submit">Buscar</button>
+</form>
+
+<p id="total-produtos">{{ total }} produto(s) encontrado(s)</p>
+
+{% if itens %}
+<table id="tabela-produtos">
+  <thead><tr><th>SKU</th><th>Nome</th><th>Preço</th><th>Quantidade</th><th>Mínimo</th><th>Situação</th></tr></thead>
+  <tbody>
+  {% for p in itens %}
+    <tr data-testid="produto-{{ p.sku }}">
+      <td class="sku">{{ p.sku }}</td>
+      <td class="nome"><a id="link-produto-{{ p.sku }}" href="{{ url_for('web.detalhe', pid=p.id) }}">{{ p.nome }}</a></td>
+      <td class="preco">{{ p.preco|moeda }}</td>
+      <td class="quantidade">{{ p.quantidade }}</td>
+      <td class="minimo">{{ p.estoque_minimo }}</td>
+      <td class="situacao"><span class="badge {{ p.situacao }}" data-testid="situacao-{{ p.sku }}">{{ textos_situacao[p.situacao] }}</span></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p id="lista-vazia">Nenhum produto encontrado.</p>
+{% endif %}
+
+{% if paginas > 1 %}
+<nav class="paginacao">
+  {% if pagina > 1 %}<a id="pagina-anterior" href="{{ url_for('web.produtos', q=q or None, baixo='1' if baixo else None, pagina=pagina-1) }}">&larr; Anterior</a>{% endif %}
+  <span id="pagina-atual">Página {{ pagina }} de {{ paginas }}</span>
+  {% if pagina < paginas %}<a id="proxima-pagina" href="{{ url_for('web.produtos', q=q or None, baixo='1' if baixo else None, pagina=pagina+1) }}">Próxima &rarr;</a>{% endif %}
+</nav>
+{% endif %}
+{% endblock %}

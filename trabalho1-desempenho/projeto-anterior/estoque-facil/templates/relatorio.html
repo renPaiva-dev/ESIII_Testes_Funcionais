@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block titulo %}Relatório{% endblock %}
+{% block conteudo %}
+<h1>Relatório do estoque</h1>
+
+<div class="indicadores">
+  <div class="cartao"><span>Produtos</span><strong id="rel-produtos">{{ r.total_produtos }}</strong></div>
+  <div class="cartao"><span>Unidades</span><strong id="rel-unidades">{{ r.total_unidades }}</strong></div>
+  <div class="cartao"><span>Valor total</span><strong id="rel-valor">{{ r.valor_total|moeda }}</strong></div>
+  <div class="cartao"><span>Em baixa</span><strong id="rel-baixa">{{ r.produtos_em_baixa }}</strong></div>
+</div>
+
+<p>Entradas: <strong id="rel-entradas">{{ r.entradas.movimentacoes }}</strong> movimentações ({{ r.entradas.unidades }} un.)
+ · Saídas: <strong id="rel-saidas">{{ r.saidas.movimentacoes }}</strong> movimentações ({{ r.saidas.unidades }} un.)</p>
+
+<h2>Produtos em baixa ou sem estoque</h2>
+{% if r.lista_em_baixa %}
+<table id="tabela-baixa">
+  <thead><tr><th>SKU</th><th>Nome</th><th>Quantidade</th><th>Mínimo</th><th>Situação</th></tr></thead>
+  <tbody>
+  {% for p in r.lista_em_baixa %}
+    <tr data-testid="baixa-{{ p.sku }}">
+      <td class="sku">{{ p.sku }}</td><td class="nome">{{ p.nome }}</td>
+      <td class="quantidade">{{ p.quantidade }}</td><td class="minimo">{{ p.estoque_minimo }}</td>
+      <td><span class="badge {{ p.situacao }}">{{ textos_situacao[p.situacao] }}</span></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p id="baixa-vazia">Nenhum produto em baixa.</p>
+{% endif %}
+
+<h2>Mais saídas</h2>
+{% if r.mais_saidas %}
+<ol id="lista-mais-saidas">
+  {% for x in r.mais_saidas %}<li>{{ x.sku }} – {{ x.nome }}: {{ x.unidades }} un.</li>{% endfor %}
+</ol>
+{% else %}
+<p id="saidas-vazia">Nenhuma saída registrada.</p>
+{% endif %}
+{% endblock %}

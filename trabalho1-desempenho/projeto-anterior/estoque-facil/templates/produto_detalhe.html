@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block titulo %}{{ p.nome }}{% endblock %}
+{% block conteudo %}
+<h1 id="nome-produto">{{ p.nome }}</h1>
+
+<dl class="ficha">
+  <dt>SKU</dt><dd id="detalhe-sku">{{ p.sku }}</dd>
+  <dt>Preço</dt><dd id="detalhe-preco">{{ p.preco|moeda }}</dd>
+  <dt>Saldo</dt><dd id="saldo">{{ p.quantidade }}</dd>
+  <dt>Estoque mínimo</dt><dd id="detalhe-minimo">{{ p.estoque_minimo }}</dd>
+  <dt>Situação</dt><dd><span id="situacao" class="badge {{ p.situacao }}">{{ textos_situacao[p.situacao] }}</span></dd>
+</dl>
+
+{% if session.perfil == 'admin' %}
+<div class="acoes">
+  <a id="btn-editar" class="botao" href="{{ url_for('web.editar', pid=p.id) }}">Editar</a>
+  <form method="post" action="{{ url_for('web.excluir', pid=p.id) }}" id="form-excluir">
+    <button id="btn-excluir" type="submit" class="perigo">Excluir produto</button>
+  </form>
+</div>
+{% endif %}
+
+<h2>Registrar movimentação</h2>
+<form method="post" action="{{ url_for('web.movimentar', pid=p.id) }}" id="form-movimentacao" class="cartao linha" novalidate>
+  <label>Tipo
+    <select id="tipo" name="tipo">
+      <option value="">Selecione...</option>
+      <option value="entrada">Entrada</option>
+      <option value="saida">Saída</option>
+    </select>
+  </label>
+  <label>Quantidade <input id="quantidade-mov" name="quantidade" inputmode="numeric"></label>
+  <label class="largo">Observação <input id="observacao" name="observacao"></label>
+  <button id="btn-registrar" type="submit">Registrar</button>
+</form>
+
+<h2>Histórico <small>(últimas 50)</small></h2>
+{% if historico %}
+<table id="tabela-historico">
+  <thead><tr><th>Data</th><th>Tipo</th><th>Quantidade</th><th>Saldo após</th><th>Usuário</th><th>Observação</th></tr></thead>
+  <tbody>
+  {% for m in historico %}
+    <tr data-testid="mov-{{ m.id }}">
+      <td class="data">{{ m.criado_em }}</td>
+      <td class="tipo">{{ 'Entrada' if m.tipo == 'entrada' else 'Saída' }}</td>
+      <td class="quantidade">{{ m.quantidade }}</td>
+      <td class="saldo">{{ m.saldo_apos }}</td>
+      <td class="usuario">{{ m.usuario }}</td>
+      <td class="obs">{{ m.observacao or '' }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p id="historico-vazio">Nenhuma movimentação registrada.</p>
+{% endif %}
+
+<p><a id="link-voltar" href="{{ url_for('web.produtos') }}">&larr; Voltar à lista</a></p>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}{% endblock %} - Estoque Fácil</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+<header>
+  <a href="{{ url_for('web.produtos') }}" id="link-inicio" class="marca">Estoque Fácil</a>
+  {% if session.usuario %}
+  <nav>
+    <a id="link-produtos" href="{{ url_for('web.produtos') }}">Produtos</a>
+    {% if session.perfil == 'admin' %}<a id="link-novo" href="{{ url_for('web.novo') }}">Novo produto</a>{% endif %}
+    <a id="link-relatorio" href="{{ url_for('web.relatorio') }}">Relatório</a>
+    <span class="usuario">Usuário: <strong id="usuario-logado">{{ session.usuario }}</strong> ({{ session.perfil }})</span>
+    <a id="link-sair" href="{{ url_for('web.logout') }}">Sair</a>
+  </nav>
+  {% endif %}
+</header>
+<main>
+  {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
+    {% if categoria == 'erro' %}
+      <p class="msg erro" id="mensagem-erro" data-testid="erro" role="alert">{{ mensagem }}</p>
+    {% else %}
+      <p class="msg ok" id="mensagem-sucesso" data-testid="sucesso" role="status">{{ mensagem }}</p>
+    {% endif %}
+  {% endfor %}
+  {% if erro %}<p class="msg erro" id="mensagem-erro" data-testid="erro" role="alert">{{ erro }}</p>{% endif %}
+  {% block conteudo %}{% endblock %}
+</main>
+</body>
+</html>

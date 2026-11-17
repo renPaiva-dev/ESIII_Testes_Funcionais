@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}{{ 'Novo produto' if modo == 'novo' else 'Editar produto' }}{% endblock %}
+{% block conteudo %}
+<h1>{{ 'Novo produto' if modo == 'novo' else 'Editar produto' }}</h1>
+<form method="post" id="form-produto" class="cartao estreito" novalidate>
+  {% if modo == 'novo' %}
+  <label>SKU <input id="sku" name="sku" value="{{ form.get('sku', '') }}"></label>
+  {% else %}
+  <label>SKU <input id="sku" value="{{ produto.sku }}" disabled></label>
+  {% endif %}
+  <label>Nome <input id="nome" name="nome" value="{{ form.get('nome', '') }}"></label>
+  <label>Preço (R$) <input id="preco" name="preco" value="{{ form.get('preco', '') }}" inputmode="decimal" placeholder="0,00"></label>
+  <label>Estoque mínimo <input id="estoque_minimo" name="estoque_minimo" value="{{ form.get('estoque_minimo', '') }}" inputmode="numeric"></label>
+  {% if modo == 'novo' %}
+  <label>Quantidade inicial <input id="quantidade" name="quantidade" value="{{ form.get('quantidade', '') }}" inputmode="numeric" placeholder="0"></label>
+  {% endif %}
+  <p>
+    <button id="btn-salvar" type="submit">Salvar</button>
+    <a id="link-cancelar" href="{{ url_for('web.produtos') if modo == 'novo' else url_for('web.detalhe', pid=produto.id) }}">Cancelar</a>
+  </p>
+</form>
+{% endblock %}

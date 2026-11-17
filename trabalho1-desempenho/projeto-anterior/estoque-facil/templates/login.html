@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<h1>Entrar</h1>
+<form method="post" id="form-login" class="cartao estreito" novalidate>
+  <label>Usuário <input id="usuario" name="usuario" value="{{ usuario }}" autocomplete="username"></label>
+  <label>Senha <input id="senha" name="senha" type="password" autocomplete="current-password"></label>
+  <p><button id="btn-entrar" type="submit">Entrar</button></p>
+</form>
+{% endblock %}
