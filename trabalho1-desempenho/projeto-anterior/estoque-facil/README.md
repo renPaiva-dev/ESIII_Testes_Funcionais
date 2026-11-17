@@ -133,17 +133,66 @@ Estas são características reais do sistema. Não há atrasos artificiais no c�
 
 As metas (SLA) devem ser definidas e justificadas pela equipe, como pede o guia.
 
-## Estrutura
+## Arquitetura em camadas
 
 ```
-05_Projeto_Estoque/
-  app.py          cria a aplicação, trata erros e sobe o servidor
-  web.py          telas (rotas HTML, login e perfis)
-  api.py          API REST em JSON
-  estoque.py      regras de negócio (serviços usados pela web e pela API)
-  regras.py       validações puras (sem banco nem Flask)
-  db.py           SQLite: conexão, transações, esquema e dados iniciais
-  templates/      HTML (Jinja2)
-  static/         CSS
+  Navegador / Selenium          Locust / Gatling / curl
+          │                              │
+          ▼                              ▼
+ ┌─────────────────────── CONTROLLERS ───────────────────────┐
+ │ web_controller (HTML)      api_controller (JSON)          │  HTTP: lê a requisição,
+ │ autorizacao (login e perfil)                              │  chama o service e responde
+ └───────────────────────────────┬───────────────────────────┘
+                                 ▼
+ ┌───────────────────────── SERVICES ────────────────────────┐
+ │ ProdutoService  MovimentacaoService  RelatorioService     │  regras de negócio (RN01–RN14)
+ │ AutenticacaoService   validacoes                          │  e controle de transação
+ └───────────────────────────────┬───────────────────────────┘
+                                 ▼
+ ┌─────────────────────── REPOSITORIES ──────────────────────┐
+ │ ProdutoRepository  MovimentacaoRepository                 │  único lugar com SQL
+ │ UsuarioRepository                                         │
+ └───────────────────────────────┬───────────────────────────┘
+                                 ▼
+ ┌───────────────────────── DATABASE ────────────────────────┐
+ │ conexao (conexão por requisição, transação)               │  SQLite
+ │ esquema (tabelas e dados iniciais)                        │
+ └───────────────────────────────────────────────────────────┘
+
+ MODELS (usado por todas as camadas): Produto, Movimentacao, Usuario, Pagina, ErroRegra
+```
+
+Regras de dependência:
+
+- Cada camada só chama a camada logo abaixo. Um controller nunca escreve SQL, e um repository nunca valida regra de negócio.
+- As telas e a API usam **os mesmos services**, então seguem as mesmas regras e mensagens.
+- O service abre a transação (`with transacao() as con`) e entrega a mesma conexão a todos os repositories envolvidos. Assim, "debitar saldo + gravar histórico" acontece por inteiro ou não acontece.
+
+```
+estoque-facil/
+  app.py                  ponto de entrada: cria a aplicação, registra os controllers, trata erros
+  config.py               variáveis de ambiente
+  controllers/
+    web_controller.py     telas (rotas HTML)
+    api_controller.py     API REST em JSON
+    autorizacao.py        login obrigatório e perfil admin (RN02, RN03)
+  services/
+    produto_service.py        busca, cadastro, edição e exclusão (RN04–RN08, RN12, RN13)
+    movimentacao_service.py   entradas, saídas e histórico (RN09, RN10, RN14)
+    relatorio_service.py      relatório do estoque
+    autenticacao_service.py   login (RN01)
+    validacoes.py             validações puras de entrada
+  repositories/
+    produto_repository.py
+    movimentacao_repository.py
+    usuario_repository.py
+  models/
+    produto.py            entidade Produto e situação do estoque (RN11)
+    movimentacao.py, usuario.py, pagina.py, erros.py
+  database/
+    conexao.py            conexão SQLite e transações
+    esquema.py            tabelas e dados iniciais
+  templates/              HTML (Jinja2)
+  static/                 CSS
   requirements.txt
 ```

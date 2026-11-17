@@ -1,4 +1,9 @@
-"""Estoque Fácil - sistema simples de controle de estoque.
+"""Estoque Fácil - sistema simples de controle de estoque (arquitetura em camadas).
+
+Ponto de entrada: cria a aplicação Flask, registra os controllers e trata os erros globais.
+
+    controllers  ->  services  ->  repositories  ->  database
+                 (todos usam models: entidades e ErroRegra)
 
 Executar:
     pip install -r requirements.txt
@@ -12,18 +17,14 @@ Variáveis de ambiente (opcionais):
     PERMITIR_RESET  "0" desliga POST /api/reset (padrão "1")
 """
 import argparse
-import os
 import sqlite3
-from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
 
-import api
-import db
-import estoque
-import web
-
-BASE = Path(__file__).parent
+import config
+from controllers import api_controller, web_controller
+from database import conexao, esquema
+from models import TEXTO_SITUACAO
 
 
 def moeda(valor):
@@ -32,22 +33,17 @@ def moeda(valor):
     return f"R$ {texto}"
 
 
-def create_app(config=None):
+def create_app(config_extra=None):
     app = Flask(__name__)
-    app.config.update(
-        SECRET_KEY=os.getenv("ESTOQUE_SECRET", "estoque-facil-dev"),
-        DATABASE=os.getenv("ESTOQUE_DB", str(BASE / "dados" / "estoque.db")),
-        SEED_PRODUTOS=int(os.getenv("SEED_PRODUTOS", "30")),
-        PERMITIR_RESET=os.getenv("PERMITIR_RESET", "1") == "1",
-    )
-    if config:
-        app.config.update(config)
+    app.config.update(config.carregar())
+    if config_extra:
+        app.config.update(config_extra)
     app.json.ensure_ascii = False
     app.jinja_env.filters["moeda"] = moeda
-    app.jinja_env.globals["textos_situacao"] = estoque.TEXTO_SITUACAO
-    app.teardown_appcontext(db.fechar)
-    app.register_blueprint(web.bp)
-    app.register_blueprint(api.bp)
+    app.jinja_env.globals["textos_situacao"] = TEXTO_SITUACAO
+    app.teardown_appcontext(conexao.fechar)
+    app.register_blueprint(web_controller.bp)
+    app.register_blueprint(api_controller.bp)
 
     @app.get("/health")
     def health():
@@ -83,7 +79,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     aplicacao = create_app()
-    db.iniciar(aplicacao, reset=args.reset)
-    porta = int(os.getenv("PORTA", "5001"))
+    esquema.iniciar(aplicacao, reset=args.reset)
+    porta = config.porta()
     print(f"Estoque Fácil em http://127.0.0.1:{porta}  (banco: {aplicacao.config['DATABASE']})", flush=True)
     aplicacao.run(host="127.0.0.1", port=porta, threaded=True)

@@ -1,10 +1,11 @@
-"""Regras de validação do Estoque Fácil (funções puras, sem banco nem Flask).
+"""Validações de entrada (funções puras, sem banco nem Flask).
 
-Cada violação levanta ErroRegra com a mensagem exibida ao usuário e o
-status HTTP usado pela API (422 = dado inválido, 409 = conflito de regra,
-404 = inexistente, 400 = corpo malformado).
+Cada violação levanta ErroRegra com a mensagem exibida ao usuário e o status HTTP
+usado pela API (422 = dado inválido, 400 = corpo malformado).
 """
 import re
+
+from models import ErroRegra
 
 SKU_RE = re.compile(r"[A-Z0-9][A-Z0-9-]{2,19}")   # 3 a 20 caracteres
 NOME_MIN, NOME_MAX = 3, 60
@@ -23,13 +24,6 @@ MSG = {
     "obs": "Observação deve ter no máximo 200 caracteres.",
     "json": "JSON inválido.",
 }
-
-
-class ErroRegra(Exception):
-    def __init__(self, mensagem, status=422):
-        super().__init__(mensagem)
-        self.mensagem = mensagem
-        self.status = status
 
 
 def _inteiro(valor):
@@ -65,7 +59,7 @@ def _exigir_dict(dados):
 def validar_produto(dados, novo=True):
     """Valida cadastro (novo=True) ou edição (novo=False; SKU e quantidade não mudam).
 
-    Ordem das verificações: SKU, nome, preço, estoque mínimo, quantidade inicial.
+    Ordem das verificações (RN04 a RN08): SKU, nome, preço, estoque mínimo, quantidade inicial.
     Retorna um dict com os valores normalizados.
     """
     _exigir_dict(dados)
@@ -101,7 +95,7 @@ def validar_produto(dados, novo=True):
 
 
 def validar_movimentacao(dados):
-    """Valida tipo (entrada/saida), quantidade (1..10000) e observação (até 200)."""
+    """RN09: tipo (entrada/saida), quantidade (1..10000) e observação (até 200)."""
     _exigir_dict(dados)
     tipo = str(dados.get("tipo") or "").strip().lower()
     if tipo not in ("entrada", "saida"):

@@ -4,11 +4,15 @@ Sem autenticação, para simplificar os testes de carga em ambiente local.
 """
 from flask import Blueprint, current_app, jsonify, request
 
-import db
-import estoque
-from regras import ErroRegra
+from database import esquema
+from models import ErroRegra
+from services import MovimentacaoService, ProdutoService, RelatorioService
 
 bp = Blueprint("api", __name__, url_prefix="/api")
+
+produto_service = ProdutoService()
+movimentacao_service = MovimentacaoService(produto_service)
+relatorio_service = RelatorioService()
 
 
 @bp.errorhandler(ErroRegra)
@@ -32,50 +36,53 @@ def _pagina():
 
 @bp.get("/produtos")
 def listar():
-    return jsonify(estoque.listar(request.args.get("q", ""), request.args.get("baixo") == "1", _pagina()))
+    resultado = produto_service.listar(request.args.get("q", ""), request.args.get("baixo") == "1", _pagina())
+    return jsonify(resultado.to_dict())
 
 
 @bp.get("/produtos/<int:pid>")
 def obter(pid):
-    return jsonify(estoque.obter(pid))
+    return jsonify(produto_service.obter(pid).to_dict())
 
 
 @bp.post("/produtos")
 def criar():
-    return jsonify(estoque.criar(_json(), "api")), 201
+    return jsonify(produto_service.criar(_json(), "api").to_dict()), 201
 
 
 @bp.put("/produtos/<int:pid>")
 def editar(pid):
-    return jsonify(estoque.editar(pid, _json()))
+    return jsonify(produto_service.editar(pid, _json()).to_dict())
 
 
 @bp.delete("/produtos/<int:pid>")
 def excluir(pid):
-    estoque.excluir(pid)
+    produto_service.excluir(pid)
     return jsonify(mensagem="Produto excluído.")
 
 
 @bp.get("/produtos/<int:pid>/movimentacoes")
 def historico(pid):
-    return jsonify(estoque.historico(pid))
+    return jsonify([m.to_dict() for m in movimentacao_service.historico(pid)])
 
 
 @bp.post("/produtos/<int:pid>/movimentacoes")
 def movimentar(pid):
     dados = _json()
     usuario = str(dados.get("usuario") or "api")[:40]
-    return jsonify(estoque.registrar_movimentacao(pid, dados, usuario)), 201
+    resposta = movimentacao_service.registrar(pid, dados, usuario).to_dict()
+    resposta.pop("criado_em")  # contrato da API (README): o 201 não devolve a data
+    return jsonify(resposta), 201
 
 
 @bp.get("/relatorio")
 def relatorio():
-    return jsonify(estoque.relatorio())
+    return jsonify(relatorio_service.gerar())
 
 
 @bp.post("/reset")
 def reset():
     if not current_app.config["PERMITIR_RESET"]:
         return jsonify(erro="Reset desabilitado."), 403
-    db.resetar(current_app.config["SEED_PRODUTOS"])
+    esquema.resetar(current_app.config["SEED_PRODUTOS"])
     return jsonify(mensagem="Dados restaurados.", produtos=current_app.config["SEED_PRODUTOS"])
