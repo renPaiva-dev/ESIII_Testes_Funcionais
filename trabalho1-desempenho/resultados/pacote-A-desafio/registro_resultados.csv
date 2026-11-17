@@ -1,0 +1,11 @@
+cenario,execucao,data,tipo_teste,usuarios,ritmo_r,duracao_s,requisicoes,p50_ms,p95_ms,req_s,falhas_pct,decisao,justificativa
+Desafio A - matrícula,r1,2026-11-17,verificacao,1,1,15,8,26,250,0.6,0.0,-,verificação do script com 1 aluno (não avalia SLA)
+Desafio A - matrícula,r1,2026-11-17,carga,100,10,130,4948,26,55,38.0,0.0,nao atende,p95 comprovante 4700 ms (meta 1500); p95 geral 55 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r2,2026-11-17,carga,100,10,130,4922,26,55,37.8,0.0,nao atende,p95 comprovante 5000 ms (meta 1500); p95 geral 55 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r3,2026-11-17,carga,100,10,130,4860,25,55,37.3,0.0,nao atende,p95 comprovante 5500 ms (meta 1500); p95 geral 55 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r1,2026-11-17,pico,200,20,100,5277,24,55,52.7,0.0,nao atende,p95 comprovante 7900 ms (meta 1500); p95 geral 55 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r2,2026-11-17,pico,200,20,100,5253,25,57,52.4,0.0,nao atende,p95 comprovante 6800 ms (meta 1500); p95 geral 57 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r3,2026-11-17,pico,200,20,100,5352,25,55,53.4,0.0,nao atende,p95 comprovante 5600 ms (meta 1500); p95 geral 55 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r1,2026-11-17,estresse,400,50,240,21489,25,32,89.3,0.0,atende,p95 comprovante 1400 ms (meta 1500); p95 geral 32 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r2,2026-11-17,estresse,400,50,240,21436,25,31,89.1,0.0,atende,p95 comprovante 1500 ms (meta 1500); p95 geral 31 ms (meta 800); erros técnicos 0.00%
+Desafio A - matrícula,r3,2026-11-17,estresse,400,50,240,21459,25,30,89.2,0.0,atende,p95 comprovante 1100 ms (meta 1500); p95 geral 30 ms (meta 800); erros técnicos 0.00%

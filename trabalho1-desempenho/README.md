@@ -25,7 +25,7 @@ Engenharia de Software III · Testes Funcionais
 
 ## Como rodar
 
-Cada pasta de testes tem um README com o plano, os comandos e os resultados:
+Cada pasta de testes tem um README com os comandos e um `plano_e_relatorio.md` com o plano, os resultados e a análise:
 [Exemplo A](pacote-A/exemplo/README.md) · [Desafio A](pacote-A/desafio/README.md) ·
 [Exemplo B](pacote-B/exemplo/README.md) · [Desafio B](pacote-B/desafio/README.md) ·
 [Projeto anterior](projeto-anterior/desempenho/README.md).
