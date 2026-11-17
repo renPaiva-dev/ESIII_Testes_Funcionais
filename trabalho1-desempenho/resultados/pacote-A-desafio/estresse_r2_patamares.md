@@ -1,0 +1,13 @@
+Arquivo: /home/renato/Downloads/ESIII_Testes_Funcionais-549a2f204f3049c08e9967ef1b74b261/ESIII_Testes_Funcionais/trabalho1-desempenho/pacote-A/desafio/../../resultados/pacote-A-desafio/estresse_r2_stats_history.csv
+p95 em ms (mediana da janela no patamar) | req/s | falhas/s   (* = acima da meta)
+
+| Alunos | GET /api/disciplinas | GET /api/matriculas/[id]/comprovante | POST /api/matriculas | Aggregated |
+|---|---|---|---|---|
+| 50 | 26 \| 16.0 \| 0.0 | 700 \| 1.7 \| 0.0 | 56 \| 2.5 \| 0.0 | 310 \| 20.3 \| 0.0 |
+| 100 | 27 \| 31.9 \| 0.0 | 1100 \| 2.9 \| 0.0 | 57 \| 2.5 \| 0.0 | 340 \| 37.3 \| 0.0 |
+| 150 | 27 \| 55.7 \| 0.0 | 440 \| 0.9 \| 0.0 | - | 28 \| 56.6 \| 0.0 |
+| 200 | 27 \| 76.4 \| 0.0 | 250 \| 0.2 \| 0.0 | - | 28 \| 76.7 \| 0.0 |
+| 250 | 28 \| 95.2 \| 0.0 | 930 \| 2.7 \| 0.0 | - | 29 \| 97.9 \| 0.0 |
+| 300 | 28 \| 113.2 \| 0.0 | 1300 \| 3.0 \| 0.0 | - | 30 \| 116.2 \| 0.0 |
+| 350 | 28 \| 135.6 \| 0.0 | 250 \| 0.4 \| 0.0 | - | 29 \| 136.0 \| 0.0 |
+| 400 | 29 \| 155.7 \| 0.0 | 260 \| 0.0 \| 0.0 | - | 29 \| 155.8 \| 0.0 |

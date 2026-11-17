@@ -1,0 +1,40 @@
+[2026-11-17 10:41:27,918] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 10:41:27,918] Renato/INFO/locust.main: Run time limit set to 90 seconds
+[2026-11-17 10:41:28,136] Renato/INFO/locust.runners: Ramping to 200 users at a rate of 20.00 per second
+[2026-11-17 10:41:37,145] Renato/INFO/locust.runners: All users spawned: {"Gerente": 20, "Operador": 180} (200 total users)
+[2026-11-17 10:42:57,787] Renato/INFO/locust.main: --run-time limit reached, shutting down
+[2026-11-17 10:42:58,036] Renato/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/produtos/[id]                                                          1563     0(0.00%) |      6       2      54      6 |   17.39        0.00
+GET      GET /api/produtos/[id]/movimentacoes                                            1563     0(0.00%) |      5       1      50      4 |   17.39        0.00
+GET      GET /api/produtos?q=                                                            3878     0(0.00%) |      7       2      71      7 |   43.15        0.00
+GET      GET /api/relatorio                                                               316     0(0.00%) |     10       3      63      8 |    3.52        0.00
+POST     POST /api/produtos/[id]/movimentacoes                                           2282     0(0.00%) |     14       2     261      9 |   25.39        0.00
+POST     POST /login                                                                      180     0(0.00%) |    175     107     216    180 |    2.00        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                      9782     0(0.00%) |     11       1     261      7 |  108.85        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/produtos/[id]                                                                  6      6      7      8      9     13     24     28     49     55     55   1563
+GET      GET /api/produtos/[id]/movimentacoes                                                    4      5      6      6      7     10     21     24     41     51     51   1563
+GET      GET /api/produtos?q=                                                                    7      7      8      8     10     14     24     28     56     71     71   3878
+GET      GET /api/relatorio                                                                      8      9     10     11     14     29     44     52     63     63     63    316
+POST     POST /api/produtos/[id]/movimentacoes                                                   9     11     15     19     29     42     58     74    150    260    260   2282
+POST     POST /login                                                                           180    190    200    200    200    210    210    220    220    220    220    180
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                              7      8      9     10     16     29     82    180    210    260    260   9782
+
+
+================ ESTOQUE FÁCIL - projeto anterior ================
+[SLA] p95 busca                                                 14 ms  (meta  <= 300 ms)  OK
+[SLA] p95 consulta produto                                      13 ms  (meta  <= 300 ms)  OK
+[SLA] p95 consulta histórico                                    10 ms  (meta  <= 300 ms)  OK
+[SLA] p95 movimentação                                          42 ms  (meta  <= 500 ms)  OK
+[SLA] p95 relatório                                             29 ms  (meta <= 2000 ms)  OK
+[SLA] p95 login                                                210 ms  (meta <= 1000 ms)  OK
+[SLA] erros técnicos                                            0.00%  (meta       < 1%)  OK
+[INTEGRIDADE] saldos (inicial + aceitos = final, nunca < 0)    0 divergente(s), 0 negativo(s)  (meta          0)  OK
+Movimentações aceitas em 890 produtos; regras de negócio: {'409 Estoque insuficiente': 2}

@@ -1,0 +1,49 @@
+[2026-11-17 10:32:20,391] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 10:32:20,392] Renato/INFO/locust.main: Run time limit set to 90 seconds
+[2026-11-17 10:32:20,607] Renato/INFO/locust.runners: Ramping to 1200 users at a rate of 100.00 per second
+[2026-11-17 10:32:31,626] Renato/INFO/locust.runners: All users spawned: {"Gerente": 120, "Operador": 1080} (1200 total users)
+
+[PROTEÇÃO] PROTEÇÃO ACIONADA em 79 s: p95 2600 ms por 10 s seguidos
+[2026-11-17 10:33:40,091] Renato/INFO/locust.main: Shutting down (exit code 1)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/produtos/[id]                                                          7294     0(0.00%) |     69       1    7575     13 |   91.78        0.00
+GET      GET /api/produtos/[id]/movimentacoes                                            7294     0(0.00%) |     43       1    7541     17 |   91.78        0.00
+GET      GET /api/produtos?q=                                                           18421     0(0.00%) |     78       1    7577     15 |  231.78        0.00
+GET      GET /api/relatorio                                                              1636     0(0.00%) |     90       4    7580     28 |   20.59        0.00
+POST     POST /api/produtos/[id]/movimentacoes                                          10858     1(0.01%) |    400       2   10002     30 |  136.62        0.01
+POST     POST /login                                                                     1080     0(0.00%) |    632     117    2468    570 |   13.59        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                     46583     1(0.00%) |    159       1   10002     18 |  586.13        0.01
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/produtos/[id]                                                                 13     17     21     24     55    270    630   1400   4500   7600   7600   7294
+GET      GET /api/produtos/[id]/movimentacoes                                                   17     25     32     38     66    170    220    580   1400   7500   7500   7294
+GET      GET /api/produtos?q=                                                                   15     21     26     31     71    280    730   1400   4500   7600   7600  18421
+GET      GET /api/relatorio                                                                     28     39     50     59    110    200    650   1600   5300   7600   7600   1636
+POST     POST /api/produtos/[id]/movimentacoes                                                  30     67    130    230    990   2500   4800   6300   8800   9700  10000  10858
+POST     POST /login                                                                           570    650    700    710    770   1600   2400   2400   2500   2500   2500   1080
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             18     27     38     53    250    650   2000   3300   7600   9200  10000  46583
+
+Error report
+# occurrences      Error                                                                                               
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+1                  POST POST /api/produtos/[id]/movimentacoes: HTTP 0                                                  
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+================ ESTOQUE FÁCIL - projeto anterior ================
+[SLA] p95 busca                                                280 ms  (meta  <= 300 ms)  OK
+[SLA] p95 consulta produto                                     270 ms  (meta  <= 300 ms)  OK
+[SLA] p95 consulta histórico                                   170 ms  (meta  <= 300 ms)  OK
+[SLA] p95 movimentação                                        2500 ms  (meta  <= 500 ms)  NÃO ATENDIDO
+[SLA] p95 relatório                                            200 ms  (meta <= 2000 ms)  OK
+[SLA] p95 login                                               1600 ms  (meta <= 1000 ms)  NÃO ATENDIDO
+[SLA] erros técnicos                                            0.00%  (meta       < 1%)  OK
+[INTEGRIDADE] saldos (inicial + aceitos = final, nunca < 0)    1 divergente(s), 0 negativo(s)  (meta          0)  NÃO ATENDIDO
+Movimentações aceitas em 1000 produtos; regras de negócio: {'409 Estoque insuficiente': 17}
+   DIVERGÊNCIA produto 494: inicial 349 + aceitos -20 != final 335
+[PROTEÇÃO] acionada nesta execução

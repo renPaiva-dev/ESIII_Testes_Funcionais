@@ -1,0 +1,47 @@
+[2026-11-17 09:29:20,805] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 09:29:20,805] Renato/INFO/locust.runners: Shape test starting.
+[2026-11-17 09:29:20,806] Renato/INFO/locust.runners: Shape worker starting
+[2026-11-17 09:29:20,806] Renato/INFO/locust.runners: Shape test updating to 100 users at 10.00 spawn rate
+[2026-11-17 09:29:20,833] Renato/INFO/locust.runners: Ramping to 100 users at a rate of 10.00 per second
+[2026-11-17 09:29:29,842] Renato/INFO/locust.runners: All users spawned: {"Aluno": 100} (100 total users)
+[2026-11-17 09:31:31,130] Renato/INFO/locust.runners: Shape test stopping
+[2026-11-17 09:31:31,181] Renato/INFO/locust.main: Shape test completed, shutting down
+[2026-11-17 09:31:31,225] Renato/INFO/locust.main: Shutting down (exit code 1)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/disciplinas                                                            4658     0(0.00%) |     25      21      42     25 |   35.76        0.00
+GET      GET /api/matriculas/[id]/comprovante                                             172     0(0.00%) |   2321     253    5080   2300 |    1.32        0.00
+POST     POST /api/matriculas                                                             118     0(0.00%) |     55      53      62     56 |    0.91        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                      4948     0(0.00%) |    106      21    5080     26 |   37.98        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/disciplinas                                                                   25     26     26     26     27     28     31     34     41     42     42   4658
+GET      GET /api/matriculas/[id]/comprovante                                                 2300   3300   3700   4200   4500   4700   4900   5000   5100   5100   5100    172
+POST     POST /api/matriculas                                                                   56     56     57     57     58     59     60     61     62     62     62    118
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             26     26     26     27     28     55   1900   3400   4800   5100   5100   4948
+
+
+================ DESAFIO A - abertura da matrícula ================
+Tipo de teste: carga
+[SLA] p95 geral                     55 ms  (meta <= 800 ms)  OK
+[SLA] p95 comprovante             4700 ms  (meta <= 1500 ms)  NÃO ATENDIDO
+[SLA] erros técnicos                0.00%  (meta      < 1%)  OK
+[SLA] integridade das vagas  0 problema(s)  (meta         0)  OK
+Matrículas efetivadas (201): 86 (86 alunos distintos de 200)
+Regras de negócio (não contam como erro):
+       32  409 Vagas esgotadas
+       13  desistiu: nenhuma disciplina com vaga na oferta
+        1  desistiu: vagas esgotadas após 3 tentativas
+Vagas por disciplina: inicial / consumidas pelo teste / final / esperado
+   ES3:  40 /  40 /   0 /   0
+   BD2:  40 /  40 /   0 /   0
+   PW2:  35 /  35 /   0 /   0
+   RED:  30 /  30 /   0 /   0
+   IHC:  30 /  30 /   0 /   0
+   EMP:  50 /  50 /   0 /   0
+   MOB:   5 /   5 /   0 /   0
+[SLA] REPROVADO

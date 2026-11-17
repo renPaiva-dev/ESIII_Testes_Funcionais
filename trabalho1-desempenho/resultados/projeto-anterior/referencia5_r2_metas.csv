@@ -1,0 +1,9 @@
+categoria,item,valor,meta,atendido
+sla,p95 busca,9 ms,<= 300 ms,sim
+sla,p95 consulta produto,8 ms,<= 300 ms,sim
+sla,p95 consulta histórico,6 ms,<= 300 ms,sim
+sla,p95 movimentação,25 ms,<= 500 ms,sim
+sla,p95 relatório,16 ms,<= 2000 ms,sim
+sla,p95 login,99 ms,<= 1000 ms,sim
+sla,erros técnicos,0.00%,< 1%,sim
+integridade,"saldos (inicial + aceitos = final, nunca < 0)","0 divergente(s), 0 negativo(s)",0,sim

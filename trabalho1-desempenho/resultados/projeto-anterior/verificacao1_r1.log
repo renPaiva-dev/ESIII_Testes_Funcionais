@@ -1,0 +1,31 @@
+[2026-11-17 10:11:50,567] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 10:11:50,567] Renato/INFO/locust.main: Run time limit set to 15 seconds
+[2026-11-17 10:11:50,894] Renato/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-11-17 10:11:50,895] Renato/INFO/locust.runners: All users spawned: {"Gerente": 0, "Operador": 1} (1 total users)
+[2026-11-17 10:12:05,430] Renato/INFO/locust.main: --run-time limit reached, shutting down
+[2026-11-17 10:12:05,702] Renato/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/produtos?q=                                                               4     0(0.00%) |      6       3       9      9 |    0.32        0.00
+POST     POST /api/produtos/[id]/movimentacoes                                              3     0(0.00%) |     15      13      18     14 |    0.24        0.00
+POST     POST /login                                                                        1     0(0.00%) |     91      91      91     91 |    0.08        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                         8     0(0.00%) |     20       3      91     14 |    0.63        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/produtos?q=                                                                    9      9     10     10     10     10     10     10     10     10     10      4
+POST     POST /api/produtos/[id]/movimentacoes                                                  14     14     19     19     19     19     19     19     19     19     19      3
+POST     POST /login                                                                            92     92     92     92     92     92     92     92     92     92     92      1
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             14     14     19     19     92     92     92     92     92     92     92      8
+
+
+================ ESTOQUE FÁCIL - projeto anterior ================
+[SLA] p95 busca                                                 10 ms  (meta  <= 300 ms)  OK
+[SLA] p95 movimentação                                          19 ms  (meta  <= 500 ms)  OK
+[SLA] p95 login                                                 92 ms  (meta <= 1000 ms)  OK
+[SLA] erros técnicos                                            0.00%  (meta       < 1%)  OK
+[INTEGRIDADE] saldos (inicial + aceitos = final, nunca < 0)    0 divergente(s), 0 negativo(s)  (meta          0)  OK
+Movimentações aceitas em 3 produtos; regras de negócio: nenhuma

@@ -1,0 +1,23 @@
+[2026-11-17 08:58:44,632] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 08:58:44,633] Renato/INFO/locust.main: Run time limit set to 15 seconds
+[2026-11-17 08:58:44,633] Renato/INFO/locust.runners: Ramping to 1 users at a rate of 1.00 per second
+[2026-11-17 08:58:44,633] Renato/INFO/locust.runners: All users spawned: {"Visitante": 1} (1 total users)
+[2026-11-17 08:58:59,503] Renato/INFO/locust.main: --run-time limit reached, shutting down
+[2026-11-17 08:58:59,568] Renato/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/cursos                                                                   20     0(0.00%) |     34      32      35     35 |    1.37        0.00
+GET      GET /api/cursos/1                                                                 15     0(0.00%) |     34      32      35     35 |    1.02        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                        35     0(0.00%) |     34      32      35     35 |    2.39        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/cursos                                                                        35     35     35     35     35     36     36     36     36     36     36     20
+GET      GET /api/cursos/1                                                                      35     35     36     36     36     36     36     36     36     36     36     15
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             35     35     35     35     36     36     36     36     36     36     36     35
+
+
+[META] agregado da execução: p95 = 36 ms (meta 500) | falhas = 0.00% (meta 1%) | 35 requisições

@@ -1,0 +1,15 @@
+categoria,item,valor,meta,atendido
+sla,p95 geral,57 ms,<= 800 ms,sim
+sla,p95 comprovante,6800 ms,<= 1500 ms,nao
+sla,erros técnicos,0.00%,< 1%,sim
+sla,integridade das vagas,0 problema(s),0,sim
+matriculas,efetivadas (201),89,,
+regra_negocio,409 Vagas esgotadas,91,,
+regra_negocio,desistiu: nenhuma disciplina com vaga na oferta,111,,
+vagas,ES3,inicial=40 consumidas=40 final=0,esperado=0,sim
+vagas,BD2,inicial=40 consumidas=40 final=0,esperado=0,sim
+vagas,PW2,inicial=35 consumidas=35 final=0,esperado=0,sim
+vagas,RED,inicial=30 consumidas=30 final=0,esperado=0,sim
+vagas,IHC,inicial=30 consumidas=30 final=0,esperado=0,sim
+vagas,EMP,inicial=50 consumidas=50 final=0,esperado=0,sim
+vagas,MOB,inicial=5 consumidas=5 final=0,esperado=0,sim

@@ -1,0 +1,28 @@
+cenario,execucao,data,tipo_teste,usuarios,ritmo_r,duracao_s,requisicoes,p50_ms,p95_ms,req_s,falhas_pct,decisao,justificativa
+Projeto anterior - Estoque Fácil,r1,2026-11-17,verificacao (verificacao1),1,1,15,8,14,92,0.6,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r2,2026-11-17,verificacao (verificacao1),1,1,15,13,7,80,0.9,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r3,2026-11-17,verificacao (verificacao1),1,1,15,11,8,82,0.8,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,referencia (referencia5),5,1,90,241,8,21,2.7,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r2,2026-11-17,referencia (referencia5),5,1,90,239,8,23,2.7,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r3,2026-11-17,referencia (referencia5),5,1,90,228,9,23,2.6,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,carga (carga20),20,2,90,969,9,21,10.8,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r2,2026-11-17,carga (carga20),20,2,90,975,8,23,10.9,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r3,2026-11-17,carga (carga20),20,2,90,962,7,22,10.8,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,estresse (estresse200),200,20,90,9590,7,23,107.4,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r2,2026-11-17,estresse (estresse200),200,20,90,9627,7,30,107.9,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r3,2026-11-17,estresse (estresse200),200,20,90,9712,7,29,108.8,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,estresse (estresse400),400,40,90,19277,7,57,215.8,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r2,2026-11-17,estresse (estresse400),400,40,90,19316,9,56,216.1,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r3,2026-11-17,estresse (estresse400),400,40,90,19333,7,28,216.5,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,estresse (estresse800),800,80,90,37771,11,280,422.6,0.00,nao atende,movimentação 540 ms > 500
+Projeto anterior - Estoque Fácil,r2,2026-11-17,estresse (estresse800),800,80,90,36998,8,510,413.5,0.00,nao atende,movimentação 1200 ms > 500; login 1900 ms > 1000
+Projeto anterior - Estoque Fácil,r3,2026-11-17,estresse (estresse800),800,80,90,38358,12,240,424.5,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,estresse (estresse1200),1200,100,90,54543,17,500,610.2,0.00,nao atende,movimentação 930 ms > 500; login 1700 ms > 1000
+Projeto anterior - Estoque Fácil,r2,2026-11-17,estresse (estresse1200),1200,100,90,46560,18,650,586.6,0.00,nao atende,interrompido pela proteção (PROTEÇÃO ACIONADA em 79 s: p95 2600 ms por 10 s seguidos)
+Projeto anterior - Estoque Fácil,r3,2026-11-17,estresse (estresse1200),1200,100,90,53158,25,770,593.1,0.00,nao atende,movimentação 1800 ms > 500; login 1900 ms > 1000
+Projeto anterior - Estoque Fácil,r1,2026-11-17,recuperacao (recuperacao20),20,2,90,969,7,24,10.9,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r2,2026-11-17,recuperacao (recuperacao20),20,2,90,945,8,23,10.6,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r3,2026-11-17,recuperacao (recuperacao20),20,2,90,970,7,21,10.9,0.00,atende,todas as operações dentro da meta; erros 0.00%
+Projeto anterior - Estoque Fácil,r1,2026-11-17,estresse+recuperacao (continuo1200para20),1200,100,180,14416,25,1800,129.3,0.01,-,perfil contínuo (ver recuperação)
+Projeto anterior - Estoque Fácil,r2,2026-11-17,estresse+recuperacao (continuo1200para20),1200,100,180,58604,21,650,325.4,0.00,-,perfil contínuo (ver recuperação)
+Projeto anterior - Estoque Fácil,r3,2026-11-17,estresse+recuperacao (continuo1200para20),1200,100,180,14889,25,1400,133.2,0.01,-,perfil contínuo (ver recuperação)

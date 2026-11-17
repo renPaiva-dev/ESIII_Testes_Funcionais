@@ -1,0 +1,55 @@
+[2026-11-17 10:49:00,968] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 10:49:00,969] Renato/INFO/locust.runners: Shape test starting.
+[2026-11-17 10:49:00,969] Renato/INFO/locust.runners: Shape worker starting
+[2026-11-17 10:49:00,969] Renato/INFO/locust.runners: Shape test updating to 1200 users at 100.00 spawn rate
+[2026-11-17 10:49:01,247] Renato/INFO/locust.runners: Ramping to 1200 users at a rate of 100.00 per second
+[2026-11-17 10:49:12,270] Renato/INFO/locust.runners: All users spawned: {"Gerente": 120, "Operador": 1080} (1200 total users)
+
+[PROTEÇÃO] PROTEÇÃO ACIONADA em 21 s: p95 2100 ms por 10 s seguidos
+[2026-11-17 10:49:23,108] Renato/INFO/locust.runners: Shape test updating to 20 users at 100.00 spawn rate
+[2026-11-17 10:49:23,109] Renato/INFO/locust.runners: Ramping to 20 users at a rate of 100.00 per second
+[2026-11-17 10:49:34,187] Renato/INFO/locust.runners: All users spawned: {"Gerente": 2, "Operador": 18} (20 total users)
+[2026-11-17 10:50:52,808] Renato/INFO/locust.runners: Shape test stopping
+[2026-11-17 10:50:52,841] Renato/INFO/locust.main: Shape test completed, shutting down
+[2026-11-17 10:50:53,222] Renato/INFO/locust.main: Shutting down (exit code 1)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/produtos/[id]                                                          2210     0(0.00%) |    190       1    3845     15 |   19.77        0.00
+GET      GET /api/produtos/[id]/movimentacoes                                            2210     0(0.00%) |    103       1    3343     17 |   19.77        0.00
+GET      GET /api/produtos?q=                                                            5567     0(0.00%) |    206       1    4492     19 |   49.81        0.00
+GET      GET /api/relatorio                                                               540     0(0.00%) |    192       3    4493     46 |    4.83        0.00
+POST     POST /api/produtos/[id]/movimentacoes                                           3282     1(0.03%) |    413       2    9413     39 |   29.36        0.01
+POST     POST /login                                                                     1080     0(0.00%) |    769     124    3413    600 |    9.66        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                     14889     1(0.01%) |    274       1    9413     25 |  133.21        0.01
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/produtos/[id]                                                                 15     34    150    200    500   1200   2200   2600   3800   3800   3800   2210
+GET      GET /api/produtos/[id]/movimentacoes                                                   17     37     79    140    210    320   1200   1600   3300   3300   3300   2210
+GET      GET /api/produtos?q=                                                                   19     51    160    230    520   1300   2300   2500   3800   4500   4500   5567
+GET      GET /api/relatorio                                                                     46     81    160    200    480   1300   1500   2300   4500   4500   4500    540
+POST     POST /api/produtos/[id]/movimentacoes                                                  39    180    400    550   1300   2300   3300   4200   6600   9400   9400   3282
+POST     POST /login                                                                           600    690    740    790   1600   1900   3300   3400   3400   3400   3400   1080
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             25    130    250    380    720   1400   2400   3100   4800   8100   9400  14889
+
+Error report
+# occurrences      Error                                                                                               
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+1                  POST POST /api/produtos/[id]/movimentacoes: HTTP 0                                                  
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+================ ESTOQUE FÁCIL - projeto anterior ================
+[SLA] p95 busca                                               1300 ms  (meta  <= 300 ms)  NÃO ATENDIDO
+[SLA] p95 consulta produto                                    1200 ms  (meta  <= 300 ms)  NÃO ATENDIDO
+[SLA] p95 consulta histórico                                   320 ms  (meta  <= 300 ms)  NÃO ATENDIDO
+[SLA] p95 movimentação                                        2300 ms  (meta  <= 500 ms)  NÃO ATENDIDO
+[SLA] p95 relatório                                           1300 ms  (meta <= 2000 ms)  OK
+[SLA] p95 login                                               1900 ms  (meta <= 1000 ms)  NÃO ATENDIDO
+[SLA] erros técnicos                                            0.01%  (meta       < 1%)  OK
+[INTEGRIDADE] saldos (inicial + aceitos = final, nunca < 0)    0 divergente(s), 0 negativo(s)  (meta          0)  OK
+Movimentações aceitas em 964 produtos; regras de negócio: {'409 Estoque insuficiente': 5}
+[PROTEÇÃO] acionada nesta execução

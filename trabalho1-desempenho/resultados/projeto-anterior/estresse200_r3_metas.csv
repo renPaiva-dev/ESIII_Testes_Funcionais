@@ -1,0 +1,10 @@
+categoria,item,valor,meta,atendido
+sla,p95 busca,14 ms,<= 300 ms,sim
+sla,p95 consulta produto,13 ms,<= 300 ms,sim
+sla,p95 consulta histórico,10 ms,<= 300 ms,sim
+sla,p95 movimentação,42 ms,<= 500 ms,sim
+sla,p95 relatório,29 ms,<= 2000 ms,sim
+sla,p95 login,210 ms,<= 1000 ms,sim
+sla,erros técnicos,0.00%,< 1%,sim
+integridade,"saldos (inicial + aceitos = final, nunca < 0)","0 divergente(s), 0 negativo(s)",0,sim
+regra_negocio,409 Estoque insuficiente,2,,

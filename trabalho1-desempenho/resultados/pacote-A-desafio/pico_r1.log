@@ -1,0 +1,49 @@
+[2026-11-17 09:35:53,281] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 09:35:53,282] Renato/INFO/locust.runners: Shape test starting.
+[2026-11-17 09:35:53,282] Renato/INFO/locust.runners: Shape worker starting
+[2026-11-17 09:35:53,282] Renato/INFO/locust.runners: Shape test updating to 200 users at 20.00 spawn rate
+[2026-11-17 09:35:53,310] Renato/INFO/locust.runners: Ramping to 200 users at a rate of 20.00 per second
+[2026-11-17 09:36:02,324] Renato/INFO/locust.runners: All users spawned: {"Aluno": 200} (200 total users)
+[2026-11-17 09:37:03,439] Renato/INFO/locust.runners: Shape test updating to 20 users at 100.00 spawn rate
+[2026-11-17 09:37:03,439] Renato/INFO/locust.runners: Ramping to 20 users at a rate of 100.00 per second
+[2026-11-17 09:37:04,445] Renato/INFO/locust.runners: All users spawned: {"Aluno": 20} (20 total users)
+[2026-11-17 09:37:33,520] Renato/INFO/locust.runners: Shape test stopping
+[2026-11-17 09:37:33,574] Renato/INFO/locust.main: Shape test completed, shutting down
+[2026-11-17 09:37:33,624] Renato/INFO/locust.main: Shutting down (exit code 1)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/disciplinas                                                            4951     0(0.00%) |     24      21      56     24 |   49.40        0.00
+GET      GET /api/matriculas/[id]/comprovante                                             170     0(0.00%) |   4084     252    8262   4100 |    1.70        0.00
+POST     POST /api/matriculas                                                             156     0(0.00%) |     55      51      63     55 |    1.56        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                      5277     0(0.00%) |    156      21    8262     24 |   52.65        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/disciplinas                                                                   24     25     25     26     27     29     37     41     51     57     57   4951
+GET      GET /api/matriculas/[id]/comprovante                                                 4100   5900   6300   6900   7700   7900   8100   8300   8300   8300   8300    170
+POST     POST /api/matriculas                                                                   55     56     57     58     60     62     63     64     64     64     64    156
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             24     25     26     26     32     55   3100   6100   8100   8300   8300   5277
+
+
+================ DESAFIO A - abertura da matrícula ================
+Tipo de teste: pico
+[SLA] p95 geral                     55 ms  (meta <= 800 ms)  OK
+[SLA] p95 comprovante             7900 ms  (meta <= 1500 ms)  NÃO ATENDIDO
+[SLA] erros técnicos                0.00%  (meta      < 1%)  OK
+[SLA] integridade das vagas  0 problema(s)  (meta         0)  OK
+Matrículas efetivadas (201): 86 (86 alunos distintos de 200)
+Regras de negócio (não contam como erro):
+       70  409 Vagas esgotadas
+      114  desistiu: nenhuma disciplina com vaga na oferta
+Vagas por disciplina: inicial / consumidas pelo teste / final / esperado
+   ES3:  40 /  40 /   0 /   0
+   BD2:  40 /  40 /   0 /   0
+   PW2:  35 /  35 /   0 /   0
+   RED:  30 /  30 /   0 /   0
+   IHC:  30 /  30 /   0 /   0
+   EMP:  50 /  50 /   0 /   0
+   MOB:   5 /   5 /   0 /   0
+[SLA] REPROVADO

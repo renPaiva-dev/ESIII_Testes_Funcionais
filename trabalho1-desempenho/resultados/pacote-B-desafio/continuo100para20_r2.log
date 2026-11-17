@@ -1,0 +1,39 @@
+[2026-11-17 09:14:01,630] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 09:14:01,631] Renato/INFO/locust.runners: Shape test starting.
+[2026-11-17 09:14:01,631] Renato/INFO/locust.runners: Shape worker starting
+[2026-11-17 09:14:01,631] Renato/INFO/locust.runners: Shape test updating to 100 users at 10.00 spawn rate
+[2026-11-17 09:14:01,631] Renato/INFO/locust.runners: Ramping to 100 users at a rate of 10.00 per second
+[2026-11-17 09:14:10,656] Renato/INFO/locust.runners: All users spawned: {"Visitante": 100} (100 total users)
+
+[PROTEÇÃO] PROTEÇÃO ACIONADA em 25 s: falhas 33% (limite 20%) por 10 s seguidos
+[2026-11-17 09:14:27,694] Renato/INFO/locust.runners: Shape test updating to 20 users at 100.00 spawn rate
+[2026-11-17 09:14:27,694] Renato/INFO/locust.runners: Ramping to 20 users at a rate of 100.00 per second
+[2026-11-17 09:14:27,804] Renato/INFO/locust.runners: All users spawned: {"Visitante": 20} (20 total users)
+[2026-11-17 09:15:56,930] Renato/INFO/locust.runners: Shape test stopping
+[2026-11-17 09:15:56,970] Renato/INFO/locust.main: Shape test completed, shutting down
+[2026-11-17 09:15:57,003] Renato/INFO/locust.main: Shutting down (exit code 1)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/cursos                                                                 5901  794(13.46%) |     71      31    1168     37 |   51.16        6.88
+GET      GET /api/cursos/1                                                               2511  379(15.09%) |     72      31    1160     39 |   21.77        3.29
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                      8412 1173(13.94%) |     71      31    1168     37 |   72.93       10.17
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/cursos                                                                        37    100    110    120    130    130    130    130    140   1200   1200   5901
+GET      GET /api/cursos/1                                                                      39    100    110    120    130    130    130    130   1000   1200   1200   2511
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             37    100    110    120    130    130    130    130    140   1200   1200   8412
+
+Error report
+# occurrences      Error                                                                                               
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+379                GET GET /api/cursos/1: HTTP 503                                                                     
+794                GET GET /api/cursos: HTTP 503                                                                       
+------------------|---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+[META] agregado da execução: p95 = 130 ms (meta 500) | falhas = 13.94% (meta 1%) | 8412 requisições
+[META] execução INTERROMPIDA pela proteção

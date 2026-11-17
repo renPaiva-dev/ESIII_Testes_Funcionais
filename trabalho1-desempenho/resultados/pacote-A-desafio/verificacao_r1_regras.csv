@@ -1,0 +1,13 @@
+categoria,item,valor,meta,atendido
+sla,p95 geral,250 ms,<= 800 ms,sim
+sla,p95 comprovante,250 ms,<= 1500 ms,sim
+sla,erros técnicos,0.00%,< 1%,sim
+sla,integridade das vagas,0 problema(s),0,sim
+matriculas,efetivadas (201),1,,
+vagas,ES3,inicial=40 consumidas=1 final=39,esperado=39,sim
+vagas,BD2,inicial=40 consumidas=0 final=40,esperado=40,sim
+vagas,PW2,inicial=35 consumidas=1 final=34,esperado=34,sim
+vagas,RED,inicial=30 consumidas=0 final=30,esperado=30,sim
+vagas,IHC,inicial=30 consumidas=0 final=30,esperado=30,sim
+vagas,EMP,inicial=50 consumidas=1 final=49,esperado=49,sim
+vagas,MOB,inicial=5 consumidas=0 final=5,esperado=5,sim

@@ -1,0 +1,68 @@
+[2026-11-17 09:48:57,847] Renato/INFO/locust.main: Starting Locust 2.47.0
+[2026-11-17 09:48:57,847] Renato/INFO/locust.runners: Shape test starting.
+[2026-11-17 09:48:57,847] Renato/INFO/locust.runners: Shape worker starting
+[2026-11-17 09:48:57,847] Renato/INFO/locust.runners: Shape test updating to 50 users at 50.00 spawn rate
+[2026-11-17 09:48:57,874] Renato/INFO/locust.runners: Ramping to 50 users at a rate of 50.00 per second
+[2026-11-17 09:48:57,881] Renato/INFO/locust.runners: All users spawned: {"Aluno": 50} (50 total users)
+[2026-11-17 09:49:27,916] Renato/INFO/locust.runners: Shape test updating to 100 users at 50.00 spawn rate
+[2026-11-17 09:49:27,916] Renato/INFO/locust.runners: Ramping to 100 users at a rate of 50.00 per second
+[2026-11-17 09:49:27,924] Renato/INFO/locust.runners: All users spawned: {"Aluno": 100} (100 total users)
+[2026-11-17 09:49:57,994] Renato/INFO/locust.runners: Shape test updating to 150 users at 50.00 spawn rate
+[2026-11-17 09:49:57,995] Renato/INFO/locust.runners: Ramping to 150 users at a rate of 50.00 per second
+[2026-11-17 09:49:58,001] Renato/INFO/locust.runners: All users spawned: {"Aluno": 150} (150 total users)
+[2026-11-17 09:50:28,073] Renato/INFO/locust.runners: Shape test updating to 200 users at 50.00 spawn rate
+[2026-11-17 09:50:28,074] Renato/INFO/locust.runners: Ramping to 200 users at a rate of 50.00 per second
+[2026-11-17 09:50:28,079] Renato/INFO/locust.runners: All users spawned: {"Aluno": 200} (200 total users)
+[2026-11-17 09:50:58,144] Renato/INFO/locust.runners: Shape test updating to 250 users at 50.00 spawn rate
+[2026-11-17 09:50:58,145] Renato/INFO/locust.runners: Ramping to 250 users at a rate of 50.00 per second
+[2026-11-17 09:50:58,151] Renato/INFO/locust.runners: All users spawned: {"Aluno": 250} (250 total users)
+[2026-11-17 09:51:28,215] Renato/INFO/locust.runners: Shape test updating to 300 users at 50.00 spawn rate
+[2026-11-17 09:51:28,215] Renato/INFO/locust.runners: Ramping to 300 users at a rate of 50.00 per second
+[2026-11-17 09:51:28,218] Renato/INFO/locust.runners: All users spawned: {"Aluno": 300} (300 total users)
+[2026-11-17 09:51:58,292] Renato/INFO/locust.runners: Shape test updating to 350 users at 50.00 spawn rate
+[2026-11-17 09:51:58,292] Renato/INFO/locust.runners: Ramping to 350 users at a rate of 50.00 per second
+[2026-11-17 09:51:58,299] Renato/INFO/locust.runners: All users spawned: {"Aluno": 350} (350 total users)
+[2026-11-17 09:52:28,374] Renato/INFO/locust.runners: Shape test updating to 400 users at 50.00 spawn rate
+[2026-11-17 09:52:28,374] Renato/INFO/locust.runners: Ramping to 400 users at a rate of 50.00 per second
+[2026-11-17 09:52:28,382] Renato/INFO/locust.runners: All users spawned: {"Aluno": 400} (400 total users)
+[2026-11-17 09:52:58,450] Renato/INFO/locust.runners: Shape test stopping
+[2026-11-17 09:52:58,537] Renato/INFO/locust.main: Shape test completed, shutting down
+[2026-11-17 09:52:58,580] Renato/INFO/locust.main: Shutting down (exit code 0)
+Type     Name                                                                          # reqs      # fails |    Avg     Min     Max    Med |   req/s  failures/s
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+GET      GET /api/disciplinas                                                           21006     0(0.00%) |     25      21     105     25 |   87.28        0.00
+GET      GET /api/matriculas/[id]/comprovante                                             340     0(0.00%) |    456     251    2262    330 |    1.41        0.00
+POST     POST /api/matriculas                                                             119     0(0.00%) |     57      52      73     56 |    0.49        0.00
+--------|----------------------------------------------------------------------------|-------|-------------|-------|-------|-------|-------|--------|-----------
+         Aggregated                                                                     21465     0(0.00%) |     32      21    2262     25 |   89.19        0.00
+
+Response time percentiles (approximated)
+Type     Name                                                                                  50%    66%    75%    80%    90%    95%    98%    99%  99.9% 99.99%   100% # reqs
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+GET      GET /api/disciplinas                                                                   25     25     26     26     27     28     41     57     93    100    110  21006
+GET      GET /api/matriculas/[id]/comprovante                                                  330    470    540    600    870   1100   1300   1500   2300   2300   2300    340
+POST     POST /api/matriculas                                                                   56     56     57     58     64     66     68     70     74     74     74    119
+--------|--------------------------------------------------------------------------------|--------|------|------|------|------|------|------|------|------|------|------|------
+         Aggregated                                                                             25     25     26     26     27     30     70    260   1000   1800   2300  21465
+
+
+================ DESAFIO A - abertura da matrícula ================
+Tipo de teste: estresse
+[SLA] p95 geral                     30 ms  (meta <= 800 ms)  OK
+[SLA] p95 comprovante             1100 ms  (meta <= 1500 ms)  OK
+[SLA] erros técnicos                0.00%  (meta      < 1%)  OK
+[SLA] integridade das vagas  0 problema(s)  (meta         0)  OK
+Matrículas efetivadas (201): 85 (85 alunos distintos de 200)
+Regras de negócio (não contam como erro):
+       34  409 Vagas esgotadas
+      228  desistiu: nenhuma disciplina com vaga na oferta
+        1  desistiu: vagas esgotadas após 3 tentativas
+Vagas por disciplina: inicial / consumidas pelo teste / final / esperado
+   ES3:  40 /  40 /   0 /   0
+   BD2:  40 /  40 /   0 /   0
+   PW2:  35 /  35 /   0 /   0
+   RED:  30 /  30 /   0 /   0
+   IHC:  30 /  30 /   0 /   0
+   EMP:  50 /  50 /   0 /   0
+   MOB:   5 /   5 /   0 /   0
+[SLA] APROVADO

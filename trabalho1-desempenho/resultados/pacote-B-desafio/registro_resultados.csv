@@ -1,0 +1,22 @@
+cenario,execucao,data,tipo_teste,usuarios,ritmo_r,duracao_s,requisicoes,p50_ms,p95_ms,req_s,falhas_pct,decisao,justificativa
+Desafio B - minicursos,r1,2026-11-17,verificacao (verificacao1),1,1,15,33,35,36,2.4,0.00,atende,"patamar: p95 36 ms, falhas 0.00%"
+Desafio B - minicursos,r2,2026-11-17,verificacao (verificacao1),1,1,15,33,36,37,2.4,0.00,atende,"patamar: p95 37 ms, falhas 0.00%"
+Desafio B - minicursos,r3,2026-11-17,verificacao (verificacao1),1,1,15,33,34,35,2.4,0.00,atende,"patamar: p95 35 ms, falhas 0.00%"
+Desafio B - minicursos,r1,2026-11-17,referencia (referencia5),5,1,90,999,35,36,11.2,0.00,atende,"patamar: p95 36 ms, falhas 0.00%"
+Desafio B - minicursos,r2,2026-11-17,referencia (referencia5),5,1,90,1013,36,37,11.3,0.00,atende,"patamar: p95 37 ms, falhas 0.00%"
+Desafio B - minicursos,r3,2026-11-17,referencia (referencia5),5,1,90,1014,34,36,11.4,0.00,atende,"patamar: p95 36 ms, falhas 0.00%"
+Desafio B - minicursos,r1,2026-11-17,carga (carga20),20,2,90,3908,34,36,43.8,0.00,atende,"patamar: p95 36 ms, falhas 0.00%"
+Desafio B - minicursos,r2,2026-11-17,carga (carga20),20,2,90,3864,35,37,43.3,0.00,atende,"patamar: p95 37 ms, falhas 0.00%"
+Desafio B - minicursos,r3,2026-11-17,carga (carga20),20,2,90,3909,33,36,43.9,0.00,atende,"patamar: p95 36 ms, falhas 0.00%"
+Desafio B - minicursos,r1,2026-11-17,estresse (estresse50),50,5,90,9559,39,71,107.2,0.02,atende,"patamar: p95 72 ms, falhas 0.02%"
+Desafio B - minicursos,r2,2026-11-17,estresse (estresse50),50,5,90,9515,39,71,106.7,0.01,atende,"patamar: p95 70 ms, falhas 0.01%"
+Desafio B - minicursos,r3,2026-11-17,estresse (estresse50),50,5,90,9533,39,70,106.9,0.02,atende,"patamar: p95 69 ms, falhas 0.02%"
+Desafio B - minicursos,r1,2026-11-17,estresse (estresse100),100,10,90,3876,110,130,161.3,26.88,nao atende,interrompido pela proteção (PROTEÇÃO ACIONADA em 24 s: falhas 33% (limite 20%) por 10 s seguidos)
+Desafio B - minicursos,r2,2026-11-17,estresse (estresse100),100,10,90,4023,110,130,160.6,26.22,nao atende,interrompido pela proteção (PROTEÇÃO ACIONADA em 25 s: falhas 32% (limite 20%) por 10 s seguidos)
+Desafio B - minicursos,r3,2026-11-17,estresse (estresse100),100,10,90,3883,110,130,161.5,26.96,nao atende,interrompido pela proteção (PROTEÇÃO ACIONADA em 24 s: falhas 33% (limite 20%) por 10 s seguidos)
+Desafio B - minicursos,r1,2026-11-17,recuperacao (recuperacao20),20,2,90,3897,34,37,43.7,0.00,atende,"patamar: p95 37 ms, falhas 0.00%"
+Desafio B - minicursos,r2,2026-11-17,recuperacao (recuperacao20),20,2,90,3901,34,37,43.8,0.00,atende,"patamar: p95 37 ms, falhas 0.00%"
+Desafio B - minicursos,r3,2026-11-17,recuperacao (recuperacao20),20,2,90,3935,34,37,44.2,0.00,atende,"patamar: p95 37 ms, falhas 0.00%"
+Desafio B - minicursos,r1,2026-11-17,estresse+recuperacao (continuo100para20),100,10,180,8175,37,130,71.5,13.52,-,
+Desafio B - minicursos,r2,2026-11-17,estresse+recuperacao (continuo100para20),100,10,180,8410,37,130,72.9,13.95,-,
+Desafio B - minicursos,r3,2026-11-17,estresse+recuperacao (continuo100para20),100,10,180,8171,36,130,71.5,13.18,-,
