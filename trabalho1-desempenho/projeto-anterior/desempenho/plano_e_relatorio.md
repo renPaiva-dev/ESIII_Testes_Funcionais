@@ -61,7 +61,7 @@ Por isso o estresse oficial sobe até 1200 usuários.
 - **Registro por execução:** [`registro_resultados.csv`](../../resultados/projeto-anterior/registro_resultados.csv), no formato do modelo.
 - **Tabelas completas:** [`resumo.md`](../../resultados/projeto-anterior/resumo.md).
 - **Metas e integridade de cada execução:** `*_metas.csv`.
-- **Gráficos:** os `*.html` do Locust e a Figura 3 do `relatorio.pdf`.
+- **Gráficos:** os `*.html` do Locust e a Figura 4 do `relatorio.pdf`.
 
 A decisão de cada fase usa o **p95 exato da execução inteira**, que inclui a chegada dos usuários. Valores r1 / r2 / r3:
 
@@ -116,6 +116,7 @@ A decisão de cada fase usa o **p95 exato da execução inteira**, que inclui a 
 ## 5. Limitações e recomendações
 
 **Limitações:**
+- Antes dos testes, o Estoque Fácil foi reorganizado em camadas (controllers, services, repositories), sem mudar o comportamento: as respostas da API e das telas foram comparadas antes e depois (92 verificações iguais). Os testes foram feitos na versão em camadas, que é a do repositório.
 - **Carga nominal e metas são premissas da equipe** para o contexto de uma papelaria. Os números absolutos dependem dessa hipótese.
 - O teste usa a **API** para busca, consulta, movimentação e relatório. As telas HTML não foram medidas, só o login.
 - A API não exige login, uma limitação do próprio sistema. O login foi medido pela tela, uma vez por sessão.

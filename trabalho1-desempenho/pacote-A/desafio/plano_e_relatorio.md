@@ -38,7 +38,7 @@ Quando a ação sorteada não faz sentido naquele momento (por exemplo, o compro
 - **Registro por execução:** [`registro_resultados.csv`](../../resultados/pacote-A-desafio/registro_resultados.csv), no formato do modelo.
 - **Comparação das repetições:** [`comparacao.md`](../../resultados/pacote-A-desafio/comparacao.md).
 - **Tabela por patamar de cada execução:** `*_patamares.md`.
-- **Gráficos:** os `*.html` do Locust (p95, req/s e usuários ao longo do tempo) e a Figura 1 do `relatorio.pdf`.
+- **Gráficos:** os `*.html` do Locust (p95, req/s e usuários ao longo do tempo) e as Figuras 1 e 2 do `relatorio.pdf`.
 
 Execução inteira, valores r1 / r2 / r3:
 

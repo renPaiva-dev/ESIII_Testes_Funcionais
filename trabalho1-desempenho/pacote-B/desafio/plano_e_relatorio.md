@@ -14,7 +14,7 @@ Equipe: Renato de Paiva Belarmino e Alisson Gabriel   Pacote/Projeto: Pacote B �
 | Perfis (usuários, ritmo, duração) | Verificação: 1 usuário, r=1, 15 s. Referência: 5, r=1, 90 s. Carga: 20, r=2, 90 s. Estresse: 50 (r=5) e 100 (r=10), 90 s cada. Pico: não se aplica a este desafio. Recuperação: 20, r=2, 90 s, logo depois do estresse; e um perfil contínuo opcional de 100 para 20 usuários, sem reiniciar o Locust |
 | Repetições | 3 por fase, com nome de arquivo diferente em cada uma (`carga20_r1`, `carga20_r2`…) |
 | Metas (SLA) | p95 ≤ 500 ms; falhas ≤ 1% (com 20 usuários); outras: voltar a essas metas em até 30 s com 20 usuários depois do estresse |
-| Critério de parada | Automático no script: falhas > 20% ou p95 > 2000 ms por 10 s seguidos. A execução é encerrada e o motivo fica em `<fase>_protecao.txt` |
+| Critério de parada | Automático no script: falhas > 20% ou p95 > 2000 ms por 10 s seguidos. A execução é encerrada e o motivo fica em `<fase>_protecao.txt`. Como o Locust calcula a taxa de falhas e o p95 sobre os últimos ~10 s, e ainda exigimos 10 s seguidos acima do limite, a parada acontece de 10 a 20 s depois de o problema começar. No estresse com 100, ela veio aos 24–25 s de execução |
 
 **Como cada fase é medida:**
 - **Agregado:** a execução inteira, incluindo a rampa. Vem do `*_stats.csv`.
@@ -40,7 +40,7 @@ Equipe: Renato de Paiva Belarmino e Alisson Gabriel   Pacote/Projeto: Pacote B �
 
 - **Registro por execução:** [`registro_resultados.csv`](../../resultados/pacote-B-desafio/registro_resultados.csv), no formato do modelo.
 - **Tabela completa:** [`resumo.md`](../../resultados/pacote-B-desafio/resumo.md).
-- **Gráficos:** os `*.html` do Locust e a Figura 2 do `relatorio.pdf`.
+- **Gráficos:** os `*.html` do Locust e a Figura 3 do `relatorio.pdf`.
 
 Patamar, depois da rampa:
 
