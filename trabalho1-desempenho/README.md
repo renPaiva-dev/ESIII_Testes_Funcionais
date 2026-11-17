@@ -6,26 +6,51 @@ Engenharia de Software III · Testes Funcionais
 
 | Integrante | Contribuição |
 |---|---|
-| _a preencher_ | |
-| _a preencher_ | |
-| _a preencher_ | |
+| Renato de Paiva Belarmino | _a preencher_ |
+| Alisson Gabriel | _a preencher_ |
 
 ## Estrutura
 
 | Pasta | Conteúdo | Situação |
 |---|---|---|
-| `pacote-A/exemplo/` | Execução do exemplo resolvido A (Semana do Cliente) | a fazer |
-| `pacote-A/desafio/` | Testes do Desafio A (abertura da matrícula) | a fazer |
-| `pacote-B/exemplo/` | Execução do exemplo resolvido B (catálogo da biblioteca) | a fazer |
-| `pacote-B/desafio/` | Testes do Desafio B (consulta de minicursos) | a fazer |
+| `pacote-A/exemplo/` | Execução do exemplo resolvido A (Semana do Cliente), comparada com a referência do professor | pronto |
+| `pacote-A/desafio/` | Testes do Desafio A (abertura da matrícula) | pronto (3 repetições) |
+| `pacote-B/exemplo/` | Execução do exemplo resolvido B (catálogo da biblioteca) | pronto |
+| `pacote-B/desafio/` | Testes do Desafio B (consulta de minicursos) | pronto (3 repetições) |
 | `projeto-anterior/estoque-facil/` | Sistema próprio da equipe: Estoque Fácil (Flask + SQLite) | pronto |
-| `projeto-anterior/` (testes) | Testes de desempenho do Estoque Fácil | a fazer |
-| `resultados/` | CSV, HTML e prints de cada execução | a fazer |
-| `relatorio.pdf`, `slides.pdf` | Relatório (4 a 8 páginas) e apresentação | a fazer |
+| `projeto-anterior/desempenho/` | Testes de desempenho do Estoque Fácil | pronto (3 repetições) |
+| `resultados/` | CSV, HTML e logs de cada execução | pronto |
+| `relatorio.pdf` | Relatório (8 páginas) | pronto |
+| `slides.pdf` | Slides da apresentação (21 slides: abertura, bloco do pacote A, bloco do pacote B, encerramento) | pronto |
 
 ## Como rodar
 
-Requisitos: Python 3.11 ou superior.
+Cada pasta de testes tem um README com o plano, os comandos e os resultados:
+[Exemplo A](pacote-A/exemplo/README.md) · [Desafio A](pacote-A/desafio/README.md) ·
+[Exemplo B](pacote-B/exemplo/README.md) · [Desafio B](pacote-B/desafio/README.md) ·
+[Projeto anterior](projeto-anterior/desempenho/README.md).
+
+Use sempre `127.0.0.1` no `--host`. No Linux, `localhost` tenta IPv6 primeiro e soma cerca de 2 s a cada requisição.
+
+Requisitos: Python 3.11 ou superior e o kit da disciplina (`ESIII_Testes_Funcionais.zip`), que traz os sistemas dos pacotes A e B.
+
+### Ambiente dos testes (uma vez)
+
+```sh
+python -m venv .venv
+source .venv/bin/activate            # Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install flask locust
+```
+
+### Sistemas testados (cada um em um terminal)
+
+```sh
+cd <kit>/02_Pacote_A_SaborExpress_Matricula/app && python app.py      # pacote A, porta 5000
+cd <kit>/03_Pacote_B_Biblioteca_Minicursos && python app.py           # pacote B, porta 8000
+cd projeto-anterior/estoque-facil && SEED_PRODUTOS=1000 python app.py --reset   # Estoque Fácil, porta 5001
+```
+
+Depois, em outro terminal com o venv ativo, siga o README de cada pasta de testes (links acima).
 
 ### Projeto anterior: Estoque Fácil
 
@@ -45,9 +70,9 @@ Usuários, regras de negócio, API e localizadores estão em
 
 | Item | Versão |
 |---|---|
-| Python | _a preencher_ |
-| Flask | _a preencher_ |
-| Locust ou Gatling | _a preencher_ |
-| Sistema operacional | _a preencher_ |
+| Python | 3.12.3 |
+| Flask | 3.1.3 |
+| Locust | 2.47.0 |
+| Sistema operacional | Ubuntu 24.04.5 LTS (Intel Core i7-13620H, 15 GiB) |
 
 > Os testes de carga foram executados apenas contra sistemas rodando localmente.
