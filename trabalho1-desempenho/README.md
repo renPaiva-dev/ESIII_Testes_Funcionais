@@ -6,9 +6,10 @@ Engenharia de Software III · Testes Funcionais
 
 | Integrante | Contribuição |
 |---|---|
-| Renato de Paiva Belarmino | _a preencher_ |
-| Alisson Gabriel | _a preencher_ |
+| **Renato de Paiva Belarmino** | Modelagem e implementação dos scripts de carga no Locust (`Pacote A`, `Pacote B` e `Estoque Fácil`), automação da execução em lote (`rodar.sh`, `rodar_fases.sh`) e pós-processamento estatístico (`analisar_*.py`, `comparar_repeticoes.py`). |
+| **Alisson Gabriel** | Refatoração em camadas do sistema **Estoque Fácil** (`controllers`, `services`, `repositories`, `models`), elaboração dos planos de teste (`plano_e_relatorio.md`), execução das baterias de repetições, consolidação do relatório técnico (`relatorio.pdf`), slides (`slides.pdf`) e documentação. |
 
+---
 ## Estrutura
 
 | Pasta | Conteúdo | Situação |
